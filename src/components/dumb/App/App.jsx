@@ -1,9 +1,7 @@
 import React from 'react';
 
 //import Forms from 'components/dumb/Forms/Forms';
-//import DND from 'components/dumb/DND/Container';
-//import Sort from 'components/dumb/Sort/Sort';
-import SortList from 'components/dumb/Sort/List';
+import SortList from 'components/dumb/Sort/NewSort';
 //import fullFormDef from './../Forms/sampleFormDef.js';
 
 import classnames from 'classnames';
@@ -44,9 +42,9 @@ const order = new Map({
 
 
 function syntaxHighlight(json) {
-	json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-	return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-		var cls = styles.syntaxNumber;
+	const fixedjson = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	return fixedjson.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
+		let cls = styles.syntaxNumber;
 		if (/^"/.test(match)) {
 			if (/:$/.test(match)) {
 				cls = styles.syntaxKey;
@@ -63,8 +61,8 @@ function syntaxHighlight(json) {
 }
 
 export default class AppRoot extends React.Component {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 		this.state = {
 			order
 		};

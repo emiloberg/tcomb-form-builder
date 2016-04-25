@@ -6,16 +6,16 @@
 import React from 'react';
 import Sortable from 'react-sortablejs';
 
-import SortList from 'components/dumb/Sort/List';
+//import SortList from 'components/dumb/Sort/List';
 
 import styles from './Sort.scss';
 
 // Functional Component
-const SortableList = ({ fullOrder, defs, listId, listOrder, onChange }) => {
+const SortableList = ({ fullOrder, defs, listId, onChange }) => {
 	const listItems = fullOrder.get(listId).map((curNodeId, key) => {
 		const curNodeChildren = fullOrder.get(curNodeId);
 		const childs = curNodeChildren && curNodeChildren.size
-			?	<SortList
+			?	<SortableList
 					fullOrder={ fullOrder }
 					defs={ defs }
 					listId={ curNodeId }
