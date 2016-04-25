@@ -1,0 +1,60 @@
+.cont {
+    background-color: #d6d8da;
+    margin: 2em;
+    padding: 1em;
+}
+
+.list {
+    min-height: 100px;
+}
+
+.item {
+    padding: 1em;
+    margin: 1em;
+    border: 1px dashed #6b6b6b;
+
+}
+
+.source {
+    background-color: #ffaa78;
+}
+
+.target {
+    background-color: #4caf50;
+}
+
+.dropzone {
+    background-color: rgba(100, 0, 0, .5);
+    padding: .5em;
+    margin: .5em;
+}
+
+
+.placeholder {
+    height: 100px;
+    //background-color: lightgrey;
+}
+
+
+
+.wrap {
+    display: flex;
+    width: 100%;
+}
+
+.json,
+.editor {
+    flex-grow: 1;
+}
+
+.chosen {
+    background-color: red;
+}
+
+.chosen .itemBody {
+    display: none;
+}
+
+.ghost {
+    background-color: green;
+}
