@@ -7,7 +7,7 @@ import React from 'react';
 import SortableList from './NewSort';
 
 const List = ({ fullOrder, defs, listId, onChange }) => {
-	const thisListOrder = fullOrder.getIn(listId);
+	const thisListOrder = fullOrder.get(listId);
 
 	return (
 		<SortableList

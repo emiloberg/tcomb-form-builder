@@ -31,8 +31,7 @@
 
 
 .placeholder {
-    height: 100px;
-    //background-color: lightgrey;
+    height: 53px;
 }
 
 
@@ -48,13 +47,36 @@
 }
 
 .chosen {
-    background-color: red;
+    background-color: #6b6b6b;
+    opacity: .25;
 }
 
-.chosen .itemBody {
+.chosen.ghost .itemBody {
     display: none;
 }
 
 .ghost {
-    background-color: green;
+    background-color: #6b6b6b;
+    opacity: 1;
 }
+
+.handle {
+    background-color: black;
+    width: 50px;
+    display: block;
+}
+
+.isDragging {
+    background-color: red;
+}
+
+
+.syntaxNumber {}
+.syntaxKey {
+    font-weight: bold;
+}
+.syntaxString {
+    color: darkorange;
+}
+.syntaxBoolean {}
+.syntaxNull {}

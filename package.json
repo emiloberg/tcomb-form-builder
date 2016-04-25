@@ -90,7 +90,7 @@
     "webpack-dev-server": "^1.12.1"
   },
   "dependencies": {
-    "classnames": "^2.2.3",
+    "classnames": "^2.2.4",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.0",
     "moment": "^2.11.2",
