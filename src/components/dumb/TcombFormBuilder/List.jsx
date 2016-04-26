@@ -1,27 +1,23 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-console */
 
-
 import React from 'react';
 import Sortable from 'react-sortablejs';
+import styles from './TcombFormBuilder.scss';
 
-//import SortList from 'components/dumb/Sort/List';
-
-import styles from './Sort.scss';
-
-// Functional Component
-const SortableList = ({ fullOrder, defs, listId, onChange }) => {
-	const listItems = fullOrder.get(listId).map((curNodeId, key) => {
-		const curNodeChildren = fullOrder.get(curNodeId);
-		const childs = curNodeChildren && curNodeChildren.size
-			?	<SortableList
+const List = ({ fullOrder, defs, listId, onChange }) => {
+	const listItems = fullOrder[listId].map((curNodeId, key) => {
+		const mayHaveChildren = defs[curNodeId].schema.type === 'object';
+		const curNodeChildren = fullOrder[curNodeId];
+		const childs = curNodeChildren && curNodeChildren.length //eslint-disable-line no-nested-ternary
+			?	<List
 					fullOrder={ fullOrder }
 					defs={ defs }
 					listId={ curNodeId }
 					onChange={ onChange }
 				/>
-			:	<Sortable
+			: mayHaveChildren
+				? <Sortable
 					className={ styles.placeholder }
 					options={{
 						group: {
@@ -35,12 +31,13 @@ const SortableList = ({ fullOrder, defs, listId, onChange }) => {
 						onChange({ newOrder, listId: curNodeId });
 					}}
 				/>
-			;
+				: null
+				;
 
 		return (
 			<div className={ styles.item } key={key} data-id={curNodeId}>
 				<div className={ styles.itemHeader}>
-					Item: { defs.getIn([curNodeId, 'text']) }
+					Item: { defs[curNodeId].xPropName }
 				</div>
 				<div className={ styles.itemBody }>
 					{ childs }
@@ -72,9 +69,4 @@ const SortableList = ({ fullOrder, defs, listId, onChange }) => {
 	);
 };
 
-SortableList.propTypes = {
-	listOrder: React.PropTypes.any,
-	onChange: React.PropTypes.func
-};
-
-export default SortableList;
+export default List;

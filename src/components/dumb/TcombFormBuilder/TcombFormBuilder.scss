@@ -11,7 +11,7 @@
 .item {
     padding: 1em;
     margin: 1em;
-    border: 1px dashed #6b6b6b;
+    border: 1px solid #6b6b6b;
 
 }
 
@@ -31,7 +31,10 @@
 
 
 .placeholder {
-    height: 53px;
+    margin-top: 12px;
+    height: 80px;
+    border: 2px dashed #6b6b6b;
+    background-color: #eee;
 }
 
 
