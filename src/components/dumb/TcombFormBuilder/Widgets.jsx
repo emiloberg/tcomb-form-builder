@@ -5,6 +5,7 @@ import styles from './TcombFormBuilder.scss';
 const Widgets = () => {
 	const listItems = (
 		<div
+			className={ styles.widgetItem }
 			key="apa"
 			data-id="new-123"
 		>

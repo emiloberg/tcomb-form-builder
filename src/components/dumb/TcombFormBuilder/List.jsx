@@ -4,10 +4,14 @@
 import React from 'react';
 import Sortable from 'react-sortablejs';
 import styles from './TcombFormBuilder.scss';
+import classnames from 'classnames';
+
+import convertSingleStateToTcomb from './convertSingleStateToTcomb';
+import TCombForm from './TCombForm';
 
 const List = ({ fullOrder, defs, listId, onChange }) => {
 	const listItems = fullOrder[listId].map((curNodeId, key) => {
-		const mayHaveChildren = defs[curNodeId].schema.type === 'object';
+		const isWrapper = defs[curNodeId].schema.type === 'object';
 		const curNodeChildren = fullOrder[curNodeId];
 		const childs = curNodeChildren && curNodeChildren.length //eslint-disable-line no-nested-ternary
 			?	<List
@@ -16,7 +20,7 @@ const List = ({ fullOrder, defs, listId, onChange }) => {
 					listId={ curNodeId }
 					onChange={ onChange }
 				/>
-			: mayHaveChildren
+			: isWrapper
 				? <Sortable
 					className={ styles.placeholder }
 					options={{
@@ -34,14 +38,32 @@ const List = ({ fullOrder, defs, listId, onChange }) => {
 				: null
 				;
 
+		const wrapperStyle = {
+			[styles.item]: true,
+			[styles.itemNoShow]: !defs[curNodeId].show,
+			[styles.itemIsWrapper]: isWrapper
+		};
+
 		return (
-			<div className={ styles.item } key={key} data-id={curNodeId}>
+			<div className={ classnames(wrapperStyle) } key={key} data-id={curNodeId}>
 				<div className={ styles.itemHeader}>
-					Item: { defs[curNodeId].xPropName }
+					{
+						isWrapper
+							? defs[curNodeId].name
+							: null
+					}
 				</div>
-				<div className={ styles.itemBody }>
-					{ childs }
-				</div>
+				{
+					!isWrapper
+						? <TCombForm formDef={ convertSingleStateToTcomb(defs[curNodeId]) }/>
+						: null
+				}
+				{
+					childs
+						? <div className={ styles.itemChild }>{ childs }</div>
+						: null
+				}
+
 			</div>
 		);
 	});
@@ -57,7 +79,8 @@ const List = ({ fullOrder, defs, listId, onChange }) => {
 					},
 					chosenClass: styles.chosen,
 					ghostClass: styles.ghost,
-					animation: 180
+					animation: 180,
+					//delay: 100
                 }}
 				onChange={(newOrder) => {
                     onChange({ newOrder, listId });

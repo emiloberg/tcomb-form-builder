@@ -29,12 +29,14 @@ const formDef = {
         type: 'object'
     },
     options: {
+		//order: ['Name2', 'Name3'],
         disabled: false,
         fields: {
             Name1: {
                 label: 'Contact Name'
             },
 			anObject: {
+				order: ['aBool'],
 				fields: {
 					aBool: {
 						label: 'My boolean'
@@ -48,7 +50,10 @@ const formDef = {
         }
     },
     value: {
-        Name1: 'Some sample text123'
+        Name1: 'Some sample text123',
+		anObject: {
+			aBool: true
+		}
     }
 };
 
