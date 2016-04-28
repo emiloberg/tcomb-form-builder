@@ -4,12 +4,12 @@ import uuid from 'uuid';
 import List from './List';
 import Widgets from './Widgets';
 import Options from './Options';
-import { syntaxHighlight } from './helpers';
-import { convertTcombDefToState } from './convertForm';
+import syntaxHighlight from '../helpers/syntaxHighlight';
+import convertTcombDefToState from '../converters/convertTcombDefToState';
 import styles from './TcombFormBuilder.scss';
-import optionsDefs from './optionsDefs';
+import optionsDefs from '../definitions/optionsDefs';
 
-import sampleFormDef from './sampleFormDef';
+import sampleFormDef from '../definitions/sampleFormDef';
 
 const initState = convertTcombDefToState(sampleFormDef);
 

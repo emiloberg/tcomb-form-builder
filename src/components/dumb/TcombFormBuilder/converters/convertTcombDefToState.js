@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import objectPath from 'object-path';
 
-export function convertTcombDefToState(tcombDef) {
+export default function convertTcombDefToState(tcombDef) {
 	const defs = {};
 	const order = {};
 

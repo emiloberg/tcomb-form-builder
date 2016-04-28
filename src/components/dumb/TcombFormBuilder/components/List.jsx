@@ -6,7 +6,7 @@ import Sortable from 'react-sortablejs';
 import styles from './TcombFormBuilder.scss';
 import classnames from 'classnames';
 
-import convertSingleStateToTcomb from './convertSingleStateToTcomb';
+import convertSingleStateToTcomb from '../converters/convertSingleStateToTcomb';
 import TCombForm from './TCombForm';
 
 const List = ({ fullOrder, defs, listId, selected, onChange, onClick }) => {

@@ -1,6 +1,6 @@
-import styles from './TcombFormBuilder.scss';
+import styles from '../components/TcombFormBuilder.scss';
 
-export function syntaxHighlight(json) {
+export default function syntaxHighlight(json) {
 	const fixedjson = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	return fixedjson.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
 		let cls = styles.syntaxNumber;
