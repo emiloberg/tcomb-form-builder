@@ -14,6 +14,10 @@
     //border: 1px solid #6b6b6b;
 }
 
+.itemSelected {
+    border: 1px solid brown;
+}
+
 .itemNoShow {
     opacity: 0.5;
 }
@@ -22,6 +26,10 @@
     border: 1px dashed black;
     margin-bottom: 1em;
     padding: 1em;
+}
+
+.itemIsWrapper.itemSelected {
+    border: 1px solid brown;
 }
 
 .itemHeader {
@@ -62,18 +70,25 @@
 }
 
 .widgetWrap {
-    flex-grow: .5;
+    flex-basis: 10%;
     background-color: #d2d2d2;
+    padding: 1em;
 }
 
 .editor {
-    flex-grow: 2;
+    flex-basis: 30%;
     background-color: #eee;
     padding: 1em;
 }
 
+.options {
+    flex-basis: 30%;
+    padding: 1em;
+    background-color: #d2d2d2;
+}
+
 .json {
-    flex-grow: 1;
+    flex-basis: 30%;
     padding: 1em;
     background-color: #272822;
 }
@@ -124,8 +139,8 @@
 
 
 .widgetItem {
-    width: 100px;
-    height: 100px;
+    width: calc(100% - 2em - 2px);
+    padding: 1em;
     border: 1px solid black;
     background-color: white;
 }

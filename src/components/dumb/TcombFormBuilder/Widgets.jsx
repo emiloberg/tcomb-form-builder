@@ -3,14 +3,23 @@ import Sortable from 'react-sortablejs';
 import styles from './TcombFormBuilder.scss';
 
 const Widgets = () => {
-	const listItems = (
+	const listItems = ([(
 		<div
 			className={ styles.widgetItem }
 			key="apa"
 			data-id="new-123"
 		>
-			Item
+			Text
 		</div>
+	), (
+		<div
+			className={ styles.widgetItem }
+			key="apaobj"
+			data-id="an-object"
+		>
+			Object
+		</div>
+		)]
 	);
 
 	return (

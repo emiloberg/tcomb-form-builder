@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import convertSingleStateToTcomb from './convertSingleStateToTcomb';
 import TCombForm from './TCombForm';
 
-const List = ({ fullOrder, defs, listId, onChange }) => {
+const List = ({ fullOrder, defs, listId, selected, onChange, onClick }) => {
 	const listItems = fullOrder[listId].map((curNodeId, key) => {
 		const isWrapper = defs[curNodeId].schema.type === 'object';
 		const curNodeChildren = fullOrder[curNodeId];
@@ -17,8 +17,10 @@ const List = ({ fullOrder, defs, listId, onChange }) => {
 			?	<List
 					fullOrder={ fullOrder }
 					defs={ defs }
+					selected={ selected }
 					listId={ curNodeId }
 					onChange={ onChange }
+					onClick={ onClick }
 				/>
 			: isWrapper
 				? <Sortable
@@ -40,12 +42,21 @@ const List = ({ fullOrder, defs, listId, onChange }) => {
 
 		const wrapperStyle = {
 			[styles.item]: true,
+			[styles.itemSelected]: selected === curNodeId,
 			[styles.itemNoShow]: !defs[curNodeId].show,
 			[styles.itemIsWrapper]: isWrapper
 		};
 
 		return (
-			<div className={ classnames(wrapperStyle) } key={key} data-id={curNodeId}>
+			<div
+				className={ classnames(wrapperStyle) }
+				key={key}
+				data-id={curNodeId}
+				onClick={(e) => {
+					e.stopPropagation();
+					onClick(curNodeId);
+				}}
+			>
 				<div className={ styles.itemHeader}>
 					{
 						isWrapper

@@ -5,11 +5,15 @@ import transform from 'tcomb-json-schema';
 
 const TCombForm = React.createClass({ //eslint-disable-line react/no-multi-comp
 	propTypes: {
-		formDef: React.PropTypes.object
+		formDef: React.PropTypes.object,
+		onChange: React.PropTypes.func
 	},
 
 	onChange(changeValue, path) {
-		this.refs.form.getComponent(path).validate();
+		if (this.props.onChange) {
+			this.props.onChange(this.refs.form.getValue());
+			//this.refs.form.getComponent(path).validate();
+		}
 	},
 
 	render() {

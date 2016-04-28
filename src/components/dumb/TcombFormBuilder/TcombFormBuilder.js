@@ -3,9 +3,11 @@ import React from 'react';
 import uuid from 'uuid';
 import List from './List';
 import Widgets from './Widgets';
+import Options from './Options';
 import { syntaxHighlight } from './helpers';
 import { convertTcombDefToState } from './convertForm';
 import styles from './TcombFormBuilder.scss';
+import optionsDefs from './optionsDefs';
 
 import sampleFormDef from './sampleFormDef';
 
@@ -16,7 +18,25 @@ const initOrder = initState.order;
 
 const initWidgetDefs = {
 	'new-123': {
-		xPropName: 'NY 123'
+		show: true,
+		name: 'New 134',
+		schema: {
+			type: 'string'
+		},
+		options: {
+			label: 'New Name'
+		},
+		value: 'Some sample text123'
+	},
+	'an-object': {
+		show: true,
+		name: 'anObject',
+		schema: {
+			type: 'object'
+		},
+		options: {
+			label: 'New object'
+		}
 	}
 };
 
@@ -52,15 +72,22 @@ export default class AppRoot extends React.Component {
 	constructor() {
 		super();
 		this.state = {
+			selected: null,
 			order: initOrder,
 			defs: initDefs,
 			widgetDefs: initWidgetDefs
 		};
-		this.onChange = this.onChange.bind(this);
+		this.onChangeList = this.onChangeList.bind(this);
 		this.createMarkup = this.createMarkup.bind(this);
+		this.onClickList = this.onClickList.bind(this);
+		this.onChangeOptions = this.onChangeOptions.bind(this);
 	}
 
-	onChange({ newOrder, listId }) {
+	onClickList(itemId) {
+		this.setState({ selected: itemId });
+	}
+
+	onChangeList({ newOrder, listId }) {
 		const newOrderAndDefs = prepareNewOrderAndDefs({
 			newOrder,
 			widgetDefs: this.state.widgetDefs,
@@ -78,6 +105,15 @@ export default class AppRoot extends React.Component {
 		});
 	}
 
+	onChangeOptions({ def, id }) {
+		this.setState({
+			defs: {
+				...this.state.defs,
+				[id]: def
+			}
+		});
+	}
+
 	createMarkup() { return { __html: syntaxHighlight(JSON.stringify(this.state, null, '  ')) }; }
 
 	render() {
@@ -90,8 +126,18 @@ export default class AppRoot extends React.Component {
 					<List
 						fullOrder={ this.state.order }
 						defs={ this.state.defs }
+						selected={ this.state.selected }
 						listId="root"
-						onChange={ this.onChange }
+						onChange={ this.onChangeList }
+						onClick={ this.onClickList }
+					/>
+				</div>
+				<div className={ styles.options }>
+					<Options
+						defs={ this.state.defs }
+						selected={ this.state.selected }
+						onChange={ this.onChangeOptions }
+						optionsDefs={ optionsDefs }
 					/>
 				</div>
 				<div className={ styles.json }><pre dangerouslySetInnerHTML={ this.createMarkup() }></pre></div>
