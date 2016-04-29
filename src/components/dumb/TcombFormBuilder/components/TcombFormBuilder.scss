@@ -76,7 +76,7 @@
 }
 
 .editor {
-    flex-basis: 30%;
+    flex-grow: 1;
     background-color: #eee;
     padding: 1em;
 }
@@ -87,8 +87,14 @@
     background-color: #d2d2d2;
 }
 
-.json {
+.fullFormWrapper {
     flex-basis: 30%;
+    padding: 1em;
+    background-color: #eee;
+}
+
+.json {
+    flex-grow: 1;
     padding: 1em;
     background-color: #272822;
 }

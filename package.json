@@ -11,7 +11,9 @@
     "build": "rimraf dist && BUILDLANG=en NODE_ENV=production webpack --config webpack/webpack.config.js",
     "build:analyze": "rimraf dist && BUILDLANG=en NODE_ENV=production webpack --config webpack/webpack.config.js --json > webpackStats.json && npm run analyze-build",
     "build:all": "rimraf dist && node makeProduction.js",
-    "analyze-build": "cat webpackStats.json | ./node_modules/webpack-bundle-size-analyzer/analyze-bundle-size"
+    "analyze-build": "cat webpackStats.json | ./node_modules/webpack-bundle-size-analyzer/analyze-bundle-size",
+    "babel-node": "babel-node --presets=es2015",
+    "mon": "nodemon --exec npm run babel-node -- temp.js"
   },
   "repository": {
     "type": "git",

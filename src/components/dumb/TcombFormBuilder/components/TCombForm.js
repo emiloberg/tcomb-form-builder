@@ -9,8 +9,14 @@ const TCombForm = React.createClass({ //eslint-disable-line react/no-multi-comp
 		onChange: React.PropTypes.func
 	},
 
-	onChange(/*changeValue, path*/) {
+	onChange(changeValue, path) {
 		if (this.props.onChange) {
+			//console.log('----------');
+			//console.log('val', this.refs.form.getComponent(path).validate());
+			// TODO Add validation
+			//console.log('val1', this.refs.form.validate());
+			//console.log('----------');
+			//console.log('this.refs.form.getValue()', this.refs.form.getValue());
 			this.props.onChange(this.refs.form.getValue());
 			//this.refs.form.getComponent(path).validate();
 		}

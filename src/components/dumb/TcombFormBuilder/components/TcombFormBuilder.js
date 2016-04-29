@@ -4,8 +4,10 @@ import uuid from 'uuid';
 import List from './List';
 import Widgets from './Widgets';
 import Options from './Options';
-import syntaxHighlight from '../helpers/syntaxHighlight';
+import FullForm from './FullForm';
+import Json from './Json';
 import convertTcombDefToState from '../converters/convertTcombDefToState';
+import convertStateToTcomb from './../converters/convertStateToTcomb';
 import styles from './TcombFormBuilder.scss';
 import optionsDefs from '../definitions/optionsDefs';
 
@@ -18,24 +20,18 @@ const initOrder = initState.order;
 
 const initWidgetDefs = {
 	'new-123': {
-		show: true,
-		name: 'New 134',
 		schema: {
 			type: 'string'
 		},
-		options: {
-			label: 'New Name'
-		},
-		value: 'Some sample text123'
+		//options: {},
+		//value: 'Some sample text123'
 	},
 	'an-object': {
-		show: true,
-		name: 'anObject',
 		schema: {
 			type: 'object'
 		},
 		options: {
-			label: 'New object'
+			//label: 'New object'
 		}
 	}
 };
@@ -51,11 +47,15 @@ const initWidgetDefs = {
  * @returns {{newOrder: *, defs: *}}
  */
 function prepareNewOrderAndDefs({ newOrder, defs, widgetDefs }) {
+	let justAddedItem;
 	const fixedDefs = defs;
 	const fixedNewOrder = newOrder.map(itemId => {
 		if (!initDefs[itemId]) {
 			const newItemId = uuid.v4();
+			justAddedItem = newItemId;
 			fixedDefs[newItemId] = widgetDefs[itemId];
+			fixedDefs[newItemId].name = uuid.v4().split('-')[0];
+			fixedDefs[newItemId].show = true;
 			return newItemId;
 		}
 		return itemId;
@@ -63,7 +63,8 @@ function prepareNewOrderAndDefs({ newOrder, defs, widgetDefs }) {
 
 	return {
 		newOrder: fixedNewOrder,
-		defs: fixedDefs
+		defs: fixedDefs,
+		justAddedItem
 	};
 }
 
@@ -99,10 +100,16 @@ export default class AppRoot extends React.Component {
 			[listId]: newOrderAndDefs.newOrder
 		};
 
-		this.setState({
+		const newState = {
 			order,
 			defs: newOrderAndDefs.defs
-		});
+		};
+
+		if (newOrderAndDefs.justAddedItem) {
+			newState.selected = newOrderAndDefs.justAddedItem;
+		}
+
+		this.setState(newState);
 	}
 
 	onChangeOptions({ def, id }) {
@@ -117,6 +124,11 @@ export default class AppRoot extends React.Component {
 	createMarkup() { return { __html: syntaxHighlight(JSON.stringify(this.state, null, '  ')) }; }
 
 	render() {
+		const formDef = convertStateToTcomb({
+			order: this.state.order,
+			defs: this.state.defs
+		});
+
 		return (
 			<div className={ styles.wrap }>
 				<div className={ styles.widgetWrap }>
@@ -132,6 +144,7 @@ export default class AppRoot extends React.Component {
 						onClick={ this.onClickList }
 					/>
 				</div>
+
 				<div className={ styles.options }>
 					<Options
 						defs={ this.state.defs }
@@ -140,7 +153,16 @@ export default class AppRoot extends React.Component {
 						optionsDefs={ optionsDefs }
 					/>
 				</div>
-				<div className={ styles.json }><pre dangerouslySetInnerHTML={ this.createMarkup() }></pre></div>
+				<div className={ styles.fullFormWrapper }>
+					<FullForm
+						formDef={ formDef }
+					/>
+				</div>
+
+				{/*<div className={ styles.json }><pre dangerouslySetInnerHTML={ this.createMarkup() }></pre></div>*/}
+				<div className={ styles.json }>
+					<Json formDef={ formDef }/>
+				</div>
 			</div>
 		);
 	}
