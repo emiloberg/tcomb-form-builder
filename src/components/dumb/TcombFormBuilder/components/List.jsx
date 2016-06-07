@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import convertSingleStateToTcomb from '../converters/convertSingleStateToTcomb';
 import TCombForm from './TCombForm';
 
-const List = ({ fullOrder, defs, listId, selected, onChange, onClick }) => {
+const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick }) => {
 	const listItems = fullOrder[listId].map((curNodeId, key) => {
 		const isWrapper = defs[curNodeId].schema.type === 'object';
 		const curNodeChildren = fullOrder[curNodeId];

@@ -2,25 +2,18 @@ import React from 'react';
 import Sortable from 'react-sortablejs';
 import styles from './TcombFormBuilder.scss';
 
-const Widgets = () => {
-	const listItems = ([(
-		<div
-			className={ styles.widgetItem }
-			key="apa"
-			data-id="new-123"
-		>
-			Text
-		</div>
-	), (
-		<div
-			className={ styles.widgetItem }
-			key="apaobj"
-			data-id="an-object"
-		>
-			Object
-		</div>
-		)]
-	);
+const Widgets = ({ widgetsList }) => {
+	const listItems = Object.keys(widgetsList).map(key => {
+		return (
+			<div
+				className={ styles.widgetItem }
+				key={key}
+				data-id={key}
+			>
+				{widgetsList[key].label}
+			</div>
+		);
+	});
 
 	return (
 		<div>
@@ -36,7 +29,7 @@ const Widgets = () => {
 					animation: 180
                 }}
 			>
-				{listItems}
+				{ listItems }
 			</Sortable>
 		</div>
 	);

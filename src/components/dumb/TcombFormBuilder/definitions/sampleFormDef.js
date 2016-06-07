@@ -63,49 +63,49 @@ const formDef = {
 			aTextbox: {
 				type: 'string'
 			},
-			anObject: {
-				properties: {
-					aBool: {
-						type: 'boolean'
-					},
-					aString: {
-						type: 'string'
-					}
-				},
-				required: ['aBool'],
-				type: 'object'
-			}
+			//anObject: {
+			//	properties: {
+			//		aBool: {
+			//			type: 'boolean'
+			//		},
+			//		aString: {
+			//			type: 'string'
+			//		}
+			//	},
+			//	required: ['aBool'],
+			//	type: 'object'
+			//}
 		},
 		required: [],
 		type: 'object'
 	},
 	options: {
-		order: ['aTextbox', 'anObject'],
+		order: ['aTextbox'],
 		disabled: false,
 		help: 'This is my help text<br>Apa boll',
 		fields: {
 			aTextbox: {
 			},
-			anObject: {
-				fields: {
-					aBool: {
-						label: 'My boolean'
-					},
-					aString: {
-						label: 'My string'
-					}
-				},
-				label: 'An Object with Two fields',
-				order: ['aString', 'aBool']
-			}
+			//anObject: {
+			//	fields: {
+			//		aBool: {
+			//			label: 'My boolean'
+			//		},
+			//		aString: {
+			//			label: 'My string'
+			//		}
+			//	},
+			//	label: 'An Object with Two fields',
+			//	order: ['aString', 'aBool']
+			//}
 		}
 	},
 	value: {
 		aTextbox: 'My nice textbox',
-		anObject: {
-			aString: 'My default value',
-			aBool: true
-		}
+		//anObject: {
+		//	aString: 'My default value',
+		//	aBool: true
+		//}
 	}
 };
 

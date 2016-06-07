@@ -12,10 +12,14 @@
     //padding: 1em;
     //margin: 1em;
     //border: 1px solid #6b6b6b;
+    padding: 16px;
+    border: 1px dashed #ABABAB;
+    margin: 5px;
+    cursor: move;
 }
 
 .itemSelected {
-    border: 1px solid brown;
+    //border-left: 5px solid brown;
 }
 
 .itemNoShow {
@@ -23,13 +27,13 @@
 }
 
 .itemIsWrapper {
-    border: 1px dashed black;
-    margin-bottom: 1em;
-    padding: 1em;
+    border: 1px dashed #ABABAB;
 }
 
 .itemIsWrapper.itemSelected {
-    border: 1px solid brown;
+    //border-left: 5px solid brown;
+    //padding-left: 10px;
+    //margin-left: 10px;
 }
 
 .itemHeader {
@@ -70,7 +74,7 @@
 }
 
 .widgetWrap {
-    flex-basis: 10%;
+    flex-grow: .5;
     background-color: #d2d2d2;
     padding: 1em;
 }
@@ -82,13 +86,12 @@
 }
 
 .options {
-    flex-basis: 30%;
+    flex-grow: 1;
     padding: 1em;
     background-color: #d2d2d2;
 }
 
 .fullFormWrapper {
-    flex-basis: 30%;
     padding: 1em;
     background-color: #eee;
 }
@@ -98,11 +101,11 @@
     padding: 1em;
     background-color: #272822;
 }
-
-.chosen {
-    background-color: #6b6b6b;
-    opacity: .25;
-}
+//
+//.chosen {
+//    background-color: #6b6b6b;
+//    opacity: .25;
+//}
 
 .chosen.ghost .itemChild {
     display: none;

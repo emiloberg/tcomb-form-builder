@@ -1,6 +1,8 @@
 import React from 'react';
 
-import uuid from 'uuid';
+//import uuid from 'uuid';
+import { v4 } from 'uuid';
+//import uuidv4 from 'uuid-v4';
 import List from './List';
 import Widgets from './Widgets';
 import Options from './Options';
@@ -18,56 +20,7 @@ const initState = convertTcombDefToState(sampleFormDef);
 const initDefs = initState.defs;
 const initOrder = initState.order;
 
-const initWidgetDefs = {
-	'new-123': {
-		schema: {
-			type: 'string'
-		},
-		//options: {},
-		//value: 'Some sample text123'
-	},
-	'an-object': {
-		schema: {
-			type: 'object'
-		},
-		options: {
-			//label: 'New object'
-		}
-	}
-};
-
-/**
- * If a user drags a new item (from widget) to the list, this function
- * clones the item definition from widgetDefs and put it in the item
- * definitions (defs).
- *
- * @param newOrder
- * @param defs
- * @param widgetDefs
- * @returns {{newOrder: *, defs: *}}
- */
-function prepareNewOrderAndDefs({ newOrder, defs, widgetDefs }) {
-	let justAddedItem;
-	const fixedDefs = defs;
-	const fixedNewOrder = newOrder.map(itemId => {
-		if (!initDefs[itemId]) {
-			const newItemId = uuid.v4();
-			justAddedItem = newItemId;
-			fixedDefs[newItemId] = widgetDefs[itemId];
-			fixedDefs[newItemId].name = uuid.v4().split('-')[0];
-			fixedDefs[newItemId].show = true;
-			return newItemId;
-		}
-		return itemId;
-	});
-
-	return {
-		newOrder: fixedNewOrder,
-		defs: fixedDefs,
-		justAddedItem
-	};
-}
-
+import initWidgetDefs from '../definitions/widgetDefs';
 
 export default class AppRoot extends React.Component {
 	constructor() {
@@ -79,7 +32,6 @@ export default class AppRoot extends React.Component {
 			widgetDefs: initWidgetDefs
 		};
 		this.onChangeList = this.onChangeList.bind(this);
-		this.createMarkup = this.createMarkup.bind(this);
 		this.onClickList = this.onClickList.bind(this);
 		this.onChangeOptions = this.onChangeOptions.bind(this);
 	}
@@ -89,27 +41,43 @@ export default class AppRoot extends React.Component {
 	}
 
 	onChangeList({ newOrder, listId }) {
-		const newOrderAndDefs = prepareNewOrderAndDefs({
-			newOrder,
-			widgetDefs: this.state.widgetDefs,
-			defs: this.state.defs
-		});
+		// Copy stuff
+		const fixedDefs = { ...this.state.defs };
+		const fixedOrder = [...newOrder];
 
-		const order = {
-			...this.state.order,
-			[listId]: newOrderAndDefs.newOrder
-		};
+		// Find the name of the new item if we added a new item
+		const addedItemIdArr = newOrder
+			.map(curId => (this.state.widgetDefs.hasOwnProperty(curId) ? curId : null))
+			.filter(cur => cur !== null);
 
-		const newState = {
-			order,
-			defs: newOrderAndDefs.defs
-		};
+		// Did we just add an item?
+		const hasAddedItem = addedItemIdArr.length ? true : false;
 
-		if (newOrderAndDefs.justAddedItem) {
-			newState.selected = newOrderAndDefs.justAddedItem;
+		let newUUID;
+		if (hasAddedItem) {
+			const addedItemId = addedItemIdArr[0];
+			const newItemIndex = newOrder.findIndex(cur => cur === addedItemId);
+			newUUID = v4();
+
+			// Replace placeholder name with new UUID in order
+			fixedOrder[newItemIndex] = newUUID;
+
+			// Copy the widget definition to the new definition state
+			fixedDefs[newUUID] = { ...this.state.widgetDefs[addedItemId] };
+
+			// Set some default values of copied widget def
+			fixedDefs[newUUID].show = true;
+			fixedDefs[newUUID].name = newUUID;
 		}
 
-		this.setState(newState);
+		this.setState({
+			defs: fixedDefs,
+			order: {
+				...this.state.order,
+				[listId]: fixedOrder
+			},
+			selected: newUUID
+		});
 	}
 
 	onChangeOptions({ def, id }) {
@@ -121,8 +89,6 @@ export default class AppRoot extends React.Component {
 		});
 	}
 
-	createMarkup() { return { __html: syntaxHighlight(JSON.stringify(this.state, null, '  ')) }; }
-
 	render() {
 		const formDef = convertStateToTcomb({
 			order: this.state.order,
@@ -132,14 +98,15 @@ export default class AppRoot extends React.Component {
 		return (
 			<div className={ styles.wrap }>
 				<div className={ styles.widgetWrap }>
-					<Widgets />
+					<Widgets
+						widgetsList={ initWidgetDefs }
+					/>
 				</div>
 				<div className={ styles.editor }>
 					<List
 						fullOrder={ this.state.order }
 						defs={ this.state.defs }
 						selected={ this.state.selected }
-						listId="root"
 						onChange={ this.onChangeList }
 						onClick={ this.onClickList }
 					/>
@@ -153,16 +120,19 @@ export default class AppRoot extends React.Component {
 						optionsDefs={ optionsDefs }
 					/>
 				</div>
+
+				{/*
 				<div className={ styles.fullFormWrapper }>
 					<FullForm
 						formDef={ formDef }
 					/>
 				</div>
+				 */}
 
-				{/*<div className={ styles.json }><pre dangerouslySetInnerHTML={ this.createMarkup() }></pre></div>*/}
 				<div className={ styles.json }>
 					<Json formDef={ formDef }/>
 				</div>
+
 			</div>
 		);
 	}

@@ -2,161 +2,77 @@ const optionsDefs = {
 	string: {
 		schema:  {
 			properties: {
-				type:     {
-					enum: [
-						'string',
-						'number',
-						'boolean'
-					],
-					type: 'string'
-				},
-				name:     {
-					type: 'string'
-				},
-				label:    {
-					type: 'string'
-				},
-				hide:     {
-					type: 'boolean'
-				},
-				pattern:  {
-					type: 'string'
-				},
-				disabled: {
-					type: 'boolean'
-				},
-				defaultValue: {
-					type: 'string'
-				},
-				required: {
-					type: 'boolean'
-				}
+				type:     { type: 'string' },
+				name:     { type: 'string' },
+				label:    { type: 'string' },
+				hide:     { type: 'boolean' },
+				pattern:  { type: 'string' },
+				disabled: { type: 'boolean' },
+				defaultValue: { type: 'string' },
+				required: { type: 'boolean' }
 			},
 			type: 'object'
 		},
 		options: {
 			fields: {
-				type: {
-					nullOption: false
-				}
+				type: { disabled: true }
 			}
 		}
 	},
 	number: {
 		schema:  {
 			properties: {
-				type:     {
-					enum: [
-						'string',
-						'number',
-						'boolean'
-					],
-					type: 'string'
-				},
-				name:     {
-					type: 'string'
-				},
-				label:    {
-					type: 'string'
-				},
-				hide:     {
-					type: 'boolean'
-				},
-				pattern:  {
-					type: 'string'
-				},
-				defaultValue: {
-					type: 'string'
-				},
-				disabled: {
-					type: 'boolean'
-				},
-				required: {
-					type: 'boolean'
-				}
+				type:     { type: 'string' },
+				name:     { type: 'string' },
+				label:    { type: 'string' },
+				hide:     { type: 'boolean' },
+				pattern:  { type: 'string' },
+				defaultValue: { type: 'string' },
+				disabled: { type: 'boolean' },
+				required: { type: 'boolean' }
 			},
 			type: 'object'
 		},
 		options: {
 			fields: {
-				type: {
-					nullOption: false
-				}
+				type: { disabled: true }
 			}
 		}
 	},
 	boolean: {
 		schema:  {
 			properties: {
-				type:     {
-					enum: [
-						'string',
-						'number',
-						'boolean'
-					],
-					type: 'string'
-				},
-				name:     {
-					type: 'string'
-				},
-				label:    {
-					type: 'string'
-				},
-				hide:     {
-					type: 'boolean'
-				},
-				pattern:  {
-					type: 'string'
-				},
-				defaultValue: {
-					type: 'boolean'
-				},
-				disabled: {
-					type: 'boolean'
-				},
-				required: {
-					type: 'boolean'
-				}
+				type:     { type: 'string' },
+				name:     { type: 'string' },
+				label:    { type: 'string' },
+				hide:     { type: 'boolean' },
+				pattern:  { type: 'string' },
+				defaultValue: { type: 'boolean' },
+				disabled: { type: 'boolean' },
+				required: { type: 'boolean' }
 			},
 			type: 'object'
 		},
 		options: {
 			fields: {
-				type: {
-					nullOption: false
-				}
+				type: { disabled: true }
 			}
 		}
 	},
 	object: {
 		schema:  {
 			properties: {
-				type:     {
-					enum: [
-						'object'
-					],
-					type: 'string'
-				},
-				name:     {
-					type: 'string'
-				},
-				label:    {
-					type: 'string'
-				},
-				hide:     {
-					type: 'boolean'
-				},
-				disabled: {
-					type: 'boolean'
-				}
+				type:     { type: 'string' },
+				name:     { type: 'string' },
+				label:    { type: 'string' },
+				hide:     { type: 'boolean' },
+				disabled: { type: 'boolean' }
 			},
 			type: 'object'
 		},
 		options: {
 			fields: {
-				type: {
-					disabled: true
-				}
+				type: { disabled: true }
 			}
 		}
 	},
