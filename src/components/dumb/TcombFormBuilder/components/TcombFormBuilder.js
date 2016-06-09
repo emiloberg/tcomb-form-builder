@@ -29,7 +29,8 @@ export default class AppRoot extends React.Component {
 			selected: null,
 			order: initOrder,
 			defs: initDefs,
-			widgetDefs: initWidgetDefs
+			widgetDefs: initWidgetDefs,
+			optionsTop: 0
 		};
 		this.onChangeList = this.onChangeList.bind(this);
 		this.onClickList = this.onClickList.bind(this);
@@ -37,7 +38,11 @@ export default class AppRoot extends React.Component {
 	}
 
 	onClickList(itemId) {
-		this.setState({ selected: itemId });
+		const optionsTop = document.getElementById('item-' + itemId).offsetTop;
+		this.setState({
+			optionsTop,
+			selected: itemId
+		});
 	}
 
 	onChangeList({ newOrder, listId }) {
@@ -70,14 +75,22 @@ export default class AppRoot extends React.Component {
 			fixedDefs[newUUID].name = newUUID;
 		}
 
+		const selected = hasAddedItem ? newUUID : this.state.selected;
+
 		this.setState({
 			defs: fixedDefs,
 			order: {
 				...this.state.order,
 				[listId]: fixedOrder
 			},
-			selected: newUUID
+			selected
 		});
+
+		setTimeout(() => {
+			this.setState({
+				optionsTop: document.getElementById('item-' + selected).offsetTop
+			});
+		}, 0)
 	}
 
 	onChangeOptions({ def, id }) {
@@ -96,29 +109,33 @@ export default class AppRoot extends React.Component {
 		});
 
 		return (
-			<div className={ styles.wrap }>
-				<div className={ styles.widgetWrap }>
+			<div className={ styles.pageWrap }>
+				<div className={ styles.colWidgets }>
 					<Widgets
 						widgetsList={ initWidgetDefs }
 					/>
 				</div>
-				<div className={ styles.editor }>
-					<List
-						fullOrder={ this.state.order }
-						defs={ this.state.defs }
-						selected={ this.state.selected }
-						onChange={ this.onChangeList }
-						onClick={ this.onClickList }
+				<div className={ styles.colEditor }>
+					<div className={ styles.colEditorInner }>
+						<List
+							fullOrder={ this.state.order }
+							defs={ this.state.defs }
+							selected={ this.state.selected }
+							onChange={ this.onChangeList }
+							onClick={ this.onClickList }
 					/>
+					</div>
 				</div>
 
-				<div className={ styles.options }>
-					<Options
-						defs={ this.state.defs }
-						selected={ this.state.selected }
-						onChange={ this.onChangeOptions }
-						optionsDefs={ optionsDefs }
-					/>
+				<div className={ styles.colOptions } style={{ top: this.state.optionsTop }}>
+					<div className={ styles.colOptionsInner }>
+						<Options
+							defs={ this.state.defs }
+							selected={ this.state.selected }
+							onChange={ this.onChangeOptions }
+							optionsDefs={ optionsDefs }
+						/>
+					</div>
 				</div>
 
 				{/*
@@ -127,11 +144,12 @@ export default class AppRoot extends React.Component {
 						formDef={ formDef }
 					/>
 				</div>
-				 */}
+
 
 				<div className={ styles.json }>
 					<Json formDef={ formDef }/>
 				</div>
+				 */}
 
 			</div>
 		);

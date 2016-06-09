@@ -51,6 +51,7 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 			<div
 				className={ classnames(wrapperStyle) }
 				key={key}
+				id={'item-' + curNodeId}
 				data-id={curNodeId}
 				onClick={(e) => {
 					e.stopPropagation();
@@ -60,13 +61,13 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 				<div className={ styles.itemHeader}>
 					{
 						isWrapper
-							? defs[curNodeId].name
+							? <label className={ styles.labelForWrapper }>defs[curNodeId].name</label>
 							: null
 					}
 				</div>
 				{
 					!isWrapper
-						? <TCombForm formDef={ convertSingleStateToTcomb(defs[curNodeId]) }/>
+						? <TCombForm isEditMode formDef={ convertSingleStateToTcomb(defs[curNodeId]) }/>
 						: null
 				}
 				{
@@ -91,16 +92,45 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 					chosenClass: styles.chosen,
 					ghostClass: styles.ghost,
 					animation: 180,
+					onStart: (e) => {
+						e.stopPropagation();
+						onClick(e.item.dataset.id);
+					}
 					//delay: 100
                 }}
-				onChange={(newOrder) => {
+				onChange={(newOrder, x) => {
                     onChange({ newOrder, listId });
                 }}
+
+
 			>
 				{listItems}
 			</Sortable>
 		</div>
 	);
 };
+
+
+//onEnd={() => {
+//	console.log('onEnd');
+//}}
+//onAdd={() => {
+//	console.log('onAdd');
+//}}
+//onSort={() => {
+//	console.log('onSort');
+//}}
+//onUpdate={() => {
+//	console.log('onUpdate');
+//}}
+//onRemove={() => {
+//	console.log('onRemove');
+//}}
+//onFilter={() => {
+//	console.log('onFilter');
+//}}
+//onMove={() => {
+//	console.log('onMove');
+//}}
 
 export default List;

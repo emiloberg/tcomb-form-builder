@@ -2,11 +2,14 @@ import React from 'react';
 import t from 'tcomb-form/lib';
 import templates from 'tcomb-form-templates-bootstrap';
 import transform from 'tcomb-json-schema';
+import classnames from 'classnames';
+import styles from './TcombFormBuilder.scss';
 
 const TCombForm = React.createClass({ //eslint-disable-line react/no-multi-comp
 	propTypes: {
 		formDef: React.PropTypes.object,
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
+		isEditMode: React.PropTypes.bool
 	},
 
 	onChange(changeValue, path) {
@@ -39,10 +42,14 @@ const TCombForm = React.createClass({ //eslint-disable-line react/no-multi-comp
 			required: ' *'
 		};
 
+		const stylesForm = this.props.isEditMode ? {
+			margin: 0
+		} : {};
+
 		return (
 			<div>
 				{Comment}
-				<form>
+				<form style={ stylesForm }>
 					<t.form.Form
 						ref="form"
 						type={transformedJson.type}

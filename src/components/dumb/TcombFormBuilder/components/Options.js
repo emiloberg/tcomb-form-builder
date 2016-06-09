@@ -40,7 +40,6 @@ function transformOptionsDefToState({ formValues, crossReference }) {
 
 const Options = ({ defs, selected, onChange, optionsDefs }) => {
 	if (!selected) { return <span />; } // Change this to return null when available
-	const type = defs[selected].schema.type;
 
 	const thisDef = transformStateToOptionsDef({
 		itemDef: defs[selected],
@@ -61,7 +60,6 @@ const Options = ({ defs, selected, onChange, optionsDefs }) => {
 
 	return (
 		<div>
-			Options {type}
 			<TCombForm
 				formDef={ thisDef }
 				onChange={ onChangeForm }

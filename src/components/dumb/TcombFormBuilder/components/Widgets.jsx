@@ -26,7 +26,8 @@ const Widgets = ({ widgetsList }) => {
 					},
 					chosenClass: styles.chosen,
 					ghostClass: styles.ghost,
-					animation: 180
+					animation: 180,
+					sort: false
                 }}
 			>
 				{ listItems }
