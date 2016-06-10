@@ -9,33 +9,87 @@ const optionsDefs = {
 				pattern:  { type: 'string' },
 				disabled: { type: 'boolean' },
 				defaultValue: { type: 'string' },
-				required: { type: 'boolean' }
+				required: { type: 'boolean' },
+				enum: {
+					type: 'array',
+					items: {
+						type: 'string'
+					}
+				},
+				factory: {
+					type: 'string',
+					enum: [
+						'Radio'
+					]
+				},
+				disableNullOption: { type: 'boolean' },
+				nullOptionValue: { type: 'string' },
+				nullOptionText: { type: 'string' }
 			},
 			type: 'object'
 		},
 		options: {
 			fields: {
-				type: { disabled: true }
+				type: { disabled: true },
+				factory: {
+					nullOption: {
+						value: '',
+						text: 'Default'
+					},
+					options: [
+						{
+							text: 'Radio',
+							value: 'Radio'
+						}
+					]
+				}
 			}
 		}
 	},
 	number: {
 		schema:  {
 			properties: {
-				type:     { type: 'string' },
+				type:     { type: 'number' },
 				name:     { type: 'string' },
 				label:    { type: 'string' },
 				hide:     { type: 'boolean' },
 				pattern:  { type: 'string' },
 				defaultValue: { type: 'string' },
 				disabled: { type: 'boolean' },
-				required: { type: 'boolean' }
+				required: { type: 'boolean' },
+				enum: {
+					type: 'array',
+					items: {
+						type: 'number'
+					}
+				},
+				factory: {
+					type: 'string',
+					enum: [
+						'Radio'
+					]
+				},
+				disableNullOption: { type: 'boolean' },
+				nullOptionValue: { type: 'string' },
+				nullOptionText: { type: 'string' }
 			},
 			type: 'object'
 		},
 		options: {
 			fields: {
-				type: { disabled: true }
+				type: { disabled: true },
+				factory: {
+					nullOption: {
+						value: '',
+						text: 'Default'
+					},
+					options: [
+						{
+							text: 'Radio',
+							value: 'Radio'
+						}
+					]
+				}
 			}
 		}
 	},
@@ -77,6 +131,11 @@ const optionsDefs = {
 		}
 	},
 	crossReference: {
+		disableNullOption: 'disableNullOption',
+		factory: 'options.factory',
+		nullOptionValue: 'options.nullOption.value',
+		nullOptionText: 'options.nullOption.text',
+		enum: 'schema.enum',
 		type: 'schema.type',
 		pattern: 'schema.pattern',
 		label: 'options.label',

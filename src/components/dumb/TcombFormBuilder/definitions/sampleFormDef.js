@@ -61,7 +61,8 @@ const formDef = {
 	schema: {
 		properties: {
 			aTextbox: {
-				type: 'string'
+				type: 'string',
+				enum: ['a', 'b', 'c']
 			},
 			//anObject: {
 			//	properties: {

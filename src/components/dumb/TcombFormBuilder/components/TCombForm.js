@@ -2,8 +2,8 @@ import React from 'react';
 import t from 'tcomb-form/lib';
 import templates from 'tcomb-form-templates-bootstrap';
 import transform from 'tcomb-json-schema';
-import classnames from 'classnames';
-import styles from './TcombFormBuilder.scss';
+//import classnames from 'classnames';
+//import styles from './TcombFormBuilder.scss';
 
 const TCombForm = React.createClass({ //eslint-disable-line react/no-multi-comp
 	propTypes: {
@@ -12,7 +12,7 @@ const TCombForm = React.createClass({ //eslint-disable-line react/no-multi-comp
 		isEditMode: React.PropTypes.bool
 	},
 
-	onChange(changeValue, path) {
+	onChange(/*changeValue, path*/) {
 		if (this.props.onChange) {
 			//console.log('----------');
 			//console.log('val', this.refs.form.getComponent(path).validate());
@@ -32,12 +32,27 @@ const TCombForm = React.createClass({ //eslint-disable-line react/no-multi-comp
 			value: this.props.formDef.value
 		};
 
+		/**
+		 * REGISTER FACTORIES
+		 * This is just a hack. Make it so that:
+		 * 1) It loops nested fields
+		 * 2) A user can add their own factories
+ 		 */
+		Object.keys(transformedJson.options.fields).forEach(key => {
+			const curField = transformedJson.options.fields[key];
+			if (curField.hasOwnProperty('factory')) {
+				if (curField.factory === 'Radio') {
+					transformedJson.options.fields[key].factory = t.form.Radio;
+				}
+			}
+		});
+
 		t.form.Form.templates = templates;
 		t.form.Form.i18n = {
-			down: 'Down',
-			up: 'Up',
+			down: '	↓',
+			up: '↑',
 			add: 'Add',
-			remove: 'Remove',
+			remove: '-',
 			optional: '',
 			required: ' *'
 		};

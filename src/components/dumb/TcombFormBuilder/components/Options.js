@@ -16,6 +16,7 @@ function transformStateToOptionsDef({ itemDef, optionsDef }) {
 	});
 	out.value.name = itemDef.name;
 	out.value.hide = !itemDef.show;
+
 	return out;
 }
 
@@ -35,6 +36,16 @@ function transformOptionsDefToState({ formValues, crossReference }) {
 	});
 	out.name = formValues.name;
 	out.show = !formValues.hide;
+
+
+	/**
+	 * Setting nullOptions to false if asked for
+	 */
+	// TODO: We might need to add this to the full render mode as well
+	if (out.disableNullOption) {
+		out.options.nullOption = false;
+	}
+
 	return out;
 }
 

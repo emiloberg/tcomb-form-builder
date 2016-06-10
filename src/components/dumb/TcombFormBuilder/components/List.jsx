@@ -96,9 +96,8 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 						e.stopPropagation();
 						onClick(e.item.dataset.id);
 					}
-					//delay: 100
                 }}
-				onChange={(newOrder, x) => {
+				onChange={(newOrder) => {
                     onChange({ newOrder, listId });
                 }}
 

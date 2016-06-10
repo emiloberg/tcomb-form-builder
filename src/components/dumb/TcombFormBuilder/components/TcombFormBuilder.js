@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import React from 'react';
 
 //import uuid from 'uuid';
@@ -90,7 +92,7 @@ export default class AppRoot extends React.Component {
 			this.setState({
 				optionsTop: document.getElementById('item-' + selected).offsetTop
 			});
-		}, 0)
+		}, 0);
 	}
 
 	onChangeOptions({ def, id }) {
@@ -108,7 +110,13 @@ export default class AppRoot extends React.Component {
 			defs: this.state.defs
 		});
 
+		const optionsStyle = {
+			transition: 'transform 180ms',
+			transform: 'translateY(' + this.state.optionsTop + 'px)'
+		};
+
 		return (
+			<div>
 			<div className={ styles.pageWrap }>
 				<div className={ styles.colWidgets }>
 					<Widgets
@@ -127,7 +135,7 @@ export default class AppRoot extends React.Component {
 					</div>
 				</div>
 
-				<div className={ styles.colOptions } style={{ top: this.state.optionsTop }}>
+				<div className={ styles.colOptions } style={ optionsStyle }>
 					<div className={ styles.colOptionsInner }>
 						<Options
 							defs={ this.state.defs }
@@ -147,10 +155,13 @@ export default class AppRoot extends React.Component {
 
 
 				<div className={ styles.json }>
-					<Json formDef={ formDef }/>
+
 				</div>
 				 */}
 
+			</div>
+			<Json formDef={ formDef }/>
+				<Json formDef={ this.state }/>
 			</div>
 		);
 	}

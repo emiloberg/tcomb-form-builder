@@ -18,6 +18,7 @@
     cursor: move;
     background-color: #fff;
     border-radius: 2px;
+    transition: background-color 280ms, border-color 280ms;
 }
 
 .itemSelected {
@@ -164,12 +165,11 @@
 
 
 .widgetItem {
-    width: calc(100% - 2em - 2px);
-    padding: 1em;
-    margin: 5px;
+    width: calc(100% - 32px);
+    padding: 8px;
+    margin: 16px;
     border: 1px solid #717171;
     background-color: #535353;
-    outline: 1px solid #313131;
     color: #E7E7E7;
     cursor: move;
     text-align: center;
@@ -185,7 +185,7 @@
 }
 
 .colEditor {
-    padding: 0 300px 0 250px;
+    padding: 0 400px 0 250px;
     min-height: 100%;
 }
 
@@ -201,14 +201,13 @@
     bottom: 0;
 
     background-color: #464646;
-    padding: 10px;
 }
 
 .colOptions {
     position: absolute;
     right: 0;
     top: 0;
-    width: 300px;
+    width: 400px;
     bottom: 0;
     padding: 0 10px 0 0;
 }
