@@ -47,10 +47,15 @@ export default class AppRoot extends React.Component {
 		});
 	}
 
-	onChangeList({ newOrder, listId }) {
+	onChangeList({ newOrder, listId, deletedId }) {
 		// Copy stuff
 		const fixedDefs = { ...this.state.defs };
 		const fixedOrder = [...newOrder];
+
+		// Remove the def if we removed an item
+		if (deletedId) {
+			delete fixedDefs[deletedId];
+		}
 
 		// Find the name of the new item if we added a new item
 		const addedItemIdArr = newOrder
@@ -77,7 +82,10 @@ export default class AppRoot extends React.Component {
 			fixedDefs[newUUID].name = newUUID;
 		}
 
-		const selected = hasAddedItem ? newUUID : this.state.selected;
+		// Make sure we still have the selected item (e.g. when removing)
+		const curSelected = hasAddedItem ? newUUID : this.state.selected;
+		const selectedStillExistsEh = fixedOrder.indexOf(curSelected) > -1;
+		const selected = selectedStillExistsEh ? curSelected : null;
 
 		this.setState({
 			defs: fixedDefs,
@@ -88,11 +96,13 @@ export default class AppRoot extends React.Component {
 			selected
 		});
 
-		setTimeout(() => {
-			this.setState({
-				optionsTop: document.getElementById('item-' + selected).offsetTop
-			});
-		}, 0);
+		if (selected) {
+			setTimeout(() => {
+				this.setState({
+					optionsTop: document.getElementById('item-' + selected).offsetTop
+				});
+			}, 0);
+		}
 	}
 
 	onChangeOptions({ def, id }) {
@@ -115,6 +125,19 @@ export default class AppRoot extends React.Component {
 			transform: 'translateY(' + this.state.optionsTop + 'px)'
 		};
 
+		const options = this.state.selected ? (
+			<div className={ styles.colOptions } style={ optionsStyle }>
+				<div className={ styles.colOptionsInner }>
+					<Options
+						defs={ this.state.defs }
+						selected={ this.state.selected }
+						onChange={ this.onChangeOptions }
+						optionsDefs={ optionsDefs }
+					/>
+				</div>
+			</div>
+		) : null;
+
 		return (
 			<div>
 			<div className={ styles.pageWrap }>
@@ -135,16 +158,8 @@ export default class AppRoot extends React.Component {
 					</div>
 				</div>
 
-				<div className={ styles.colOptions } style={ optionsStyle }>
-					<div className={ styles.colOptionsInner }>
-						<Options
-							defs={ this.state.defs }
-							selected={ this.state.selected }
-							onChange={ this.onChangeOptions }
-							optionsDefs={ optionsDefs }
-						/>
-					</div>
-				</div>
+				{ options }
+
 
 				{/*
 				<div className={ styles.fullFormWrapper }>
