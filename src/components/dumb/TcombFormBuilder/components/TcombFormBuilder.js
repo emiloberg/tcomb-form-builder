@@ -10,6 +10,7 @@ import FullForm from './FullForm';
 import Json from './Json';
 import convertTcombDefToState from '../converters/convertTcombDefToState';
 import convertStateToTcomb from './../converters/convertStateToTcomb';
+import removeStateOrphans from './../helpers/removeStateOrphans';
 import styles from './TcombFormBuilder.scss';
 import optionsDefs from '../definitions/optionsDefs';
 
@@ -50,11 +51,6 @@ export default class AppRoot extends React.Component {
 		const fixedDefs = { ...this.state.defs };
 		const fixedOrder = [...newOrder];
 
-		// Remove the def if we removed an item
-		if (deletedId) {
-			delete fixedDefs[deletedId];
-		}
-
 		// Find the name of the new item if we added a new item
 		const addedItemIdArr = newOrder
 			.map(curId => (this.state.widgetDefs.hasOwnProperty(curId) ? curId : null))
@@ -82,12 +78,24 @@ export default class AppRoot extends React.Component {
 
 		const selected = hasAddedItem ? newUUID : this.state.selected;
 
+		const order = {
+			...this.state.order,
+			[listId]: fixedOrder
+		};
+
+		// Remove the def if we removed an item
+		const fixedDefsAndOrder = deletedId
+			? 	removeStateOrphans({
+					defs: fixedDefs,
+					order
+				})
+			: 	{
+					defs: fixedDefs,
+					order
+				};
+
 		this.setState({
-			defs: fixedDefs,
-			order: {
-				...this.state.order,
-				[listId]: fixedOrder
-			},
+			...fixedDefsAndOrder,
 			selected
 		});
 
@@ -146,42 +154,42 @@ export default class AppRoot extends React.Component {
 
 		return (
 			<div>
-			<div className={ styles.pageWrap }>
-				<div className={ styles.colWidgets }>
-					<Widgets
-						widgetsList={ initWidgetDefs }
-					/>
-				</div>
-				<div className={ styles.colEditor }>
-					<div className={ styles.colEditorInner }>
-						<List
-							fullOrder={ this.state.order }
-							defs={ this.state.defs }
-							selected={ this.state.selected }
-							onChange={ this.onChangeList }
-							onClick={ this.onClickList }
-					/>
+				<div className={ styles.pageWrap }>
+					<div className={ styles.colWidgets }>
+						<Widgets
+							widgetsList={ initWidgetDefs }
+						/>
 					</div>
+					<div className={ styles.colEditor }>
+						<div className={ styles.colEditorInner }>
+							<List
+								fullOrder={ this.state.order }
+								defs={ this.state.defs }
+								selected={ this.state.selected }
+								onChange={ this.onChangeList }
+								onClick={ this.onClickList }
+						/>
+						</div>
+					</div>
+
+					{ options() }
+
+
+					{/*
+					<div className={ styles.fullFormWrapper }>
+						<FullForm
+							formDef={ formDef }
+						/>
+					</div>
+
+
+					<div className={ styles.json }>
+
+					</div>
+					 */}
+
 				</div>
-
-				{ options() }
-
-
-				{/*
-				<div className={ styles.fullFormWrapper }>
-					<FullForm
-						formDef={ formDef }
-					/>
-				</div>
-
-
-				<div className={ styles.json }>
-
-				</div>
-				 */}
-
-			</div>
-			<Json formDef={ formDef }/>
+				<Json formDef={ formDef }/>
 				<Json formDef={ this.state }/>
 			</div>
 		);
