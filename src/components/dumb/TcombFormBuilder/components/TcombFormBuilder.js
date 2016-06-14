@@ -93,9 +93,12 @@ export default class AppRoot extends React.Component {
 
 		if (selected) {
 			setTimeout(() => {
-				this.setState({
-					optionsTop: document.getElementById('item-' + selected).offsetTop
-				});
+				const el = document.getElementById('item-' + selected);
+				if (el) {
+					this.setState({
+						optionsTop: document.getElementById('item-' + selected).offsetTop
+					});
+				}
 			}, 0);
 		}
 	}

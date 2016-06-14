@@ -229,11 +229,12 @@
     position: absolute;
     right: -16px;
     top: -16px;
-    display: none;
 }
 
-.itemSelected .itemControl {
-    display: block;
+.itemControlWrapper {
+    position: absolute;
+    right: 0;
+    top: -16px;
 }
 
 .itemControlOuter {

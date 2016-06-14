@@ -8,51 +8,7 @@ import classnames from 'classnames';
 
 import convertSingleStateToTcomb from '../converters/convertSingleStateToTcomb';
 import TCombForm from './TCombForm';
-
-const ItemControls = ({ order, listId, nodeId, onChange }) => { //eslint-disable-line react/no-multi-comp
-	const move = ({ method }) => {
-		const newOrder = [...order];
-		const oldPosition = order.indexOf(nodeId);
-		if (method === 0) { // delete
-			newOrder.splice(oldPosition, 1);
-		} else { // move
-			const newPosition = oldPosition + method;
-			const oldItem = newOrder[oldPosition];
-			newOrder[oldPosition] = newOrder[newPosition];
-			newOrder[newPosition] = oldItem;
-		}
-		onChange({
-			newOrder,
-			listId,
-			deletedId: method === 0 ? nodeId : null
-		});
-	};
-
-	const itemButton = ({ method, style }) => { //eslint-disable-line react/no-multi-comp
-		return (
-			<div
-				className={ styles.itemControlOuter}
-				onClick={(e) => {
-				e.stopPropagation();
-				move({ method });
-			}}
-			>
-				<div className={ style }></div>
-			</div>
-		);
-	};
-
-	const MoveUp = order.indexOf(nodeId) !== 0 ? itemButton({ method: -1, style: styles.itemControlUp }) : null;
-	const MoveDown = order.indexOf(nodeId) !== order.length - 1 ? itemButton({ method: 1, style: styles.itemControlDown }) : null;
-
-	return (
-		<div>
-			{ MoveUp }
-			{ MoveDown }
-			{ itemButton({ method: 0, style: styles.itemControlDelete }) }
-		</div>
-	);
-};
+import ItemControls from './ItemControls';
 
 const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick }) => { //eslint-disable-line react/no-multi-comp
 	const listItems = fullOrder[listId].map((curNodeId, key) => {
@@ -106,7 +62,17 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 				<div className={ styles.itemHeader}>
 					{
 						isWrapper
-							? <label className={ styles.labelForWrapper }>defs[curNodeId].name</label>
+							? <div className={ styles.listItemWrapper }>
+								<label className={ styles.labelForWrapper }>{defs[curNodeId].name}</label>
+								<ItemControls
+									show={ selected === curNodeId }
+									order={ fullOrder[listId] }
+									nodeId={ curNodeId }
+									listId={ listId }
+									onChange={ onChange }
+									isWrapper
+								/>
+							</div>
 							: null
 					}
 				</div>
@@ -116,14 +82,13 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 							<div className={ styles.itemForm }>
 								<TCombForm isEditMode formDef={ convertSingleStateToTcomb(defs[curNodeId]) }/>
 							</div>
-							<div className={ styles.itemControl }>
-								<ItemControls
-									order={ fullOrder[listId] }
-									nodeId={ curNodeId }
-									listId={ listId }
-									onChange={ onChange }
-								/>
-							</div>
+							<ItemControls
+								show={ selected === curNodeId }
+								order={ fullOrder[listId] }
+								nodeId={ curNodeId }
+								listId={ listId }
+								onChange={ onChange }
+							/>
 						</div>
 						: null
 				}
@@ -132,7 +97,6 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 						? <div className={ styles.itemChild }>{ childs }</div>
 						: null
 				}
-
 			</div>
 		);
 	});
