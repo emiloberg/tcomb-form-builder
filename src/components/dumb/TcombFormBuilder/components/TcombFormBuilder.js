@@ -2,9 +2,7 @@
 
 import React from 'react';
 
-//import uuid from 'uuid';
 import { v4 } from 'uuid';
-//import uuidv4 from 'uuid-v4';
 import List from './List';
 import Widgets from './Widgets';
 import Options from './Options';
@@ -82,10 +80,7 @@ export default class AppRoot extends React.Component {
 			fixedDefs[newUUID].name = newUUID;
 		}
 
-		// Make sure we still have the selected item (e.g. when removing)
-		const curSelected = hasAddedItem ? newUUID : this.state.selected;
-		const selectedStillExistsEh = fixedOrder.indexOf(curSelected) > -1;
-		const selected = selectedStillExistsEh ? curSelected : null;
+		const selected = hasAddedItem ? newUUID : this.state.selected;
 
 		this.setState({
 			defs: fixedDefs,
@@ -125,18 +120,26 @@ export default class AppRoot extends React.Component {
 			transform: 'translateY(' + this.state.optionsTop + 'px)'
 		};
 
-		const options = this.state.selected ? (
-			<div className={ styles.colOptions } style={ optionsStyle }>
-				<div className={ styles.colOptionsInner }>
-					<Options
-						defs={ this.state.defs }
-						selected={ this.state.selected }
-						onChange={ this.onChangeOptions }
-						optionsDefs={ optionsDefs }
-					/>
+		const options = () => {
+			const flatOrder = Object.keys(this.state.order)
+				.map(key => [key, ...this.state.order[key]])
+				.reduce((a, b) => a.concat(b), [])
+				.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
+
+			const isSelectedAvailable = this.state.selected && flatOrder.indexOf(this.state.selected) > -1;
+			return isSelectedAvailable ? (
+				<div className={ styles.colOptions } style={ optionsStyle }>
+					<div className={ styles.colOptionsInner }>
+						<Options
+							defs={ this.state.defs }
+							selected={ this.state.selected }
+							onChange={ this.onChangeOptions }
+							optionsDefs={ optionsDefs }
+						/>
+					</div>
 				</div>
-			</div>
-		) : null;
+			) : null;
+		};
 
 		return (
 			<div>
@@ -158,7 +161,7 @@ export default class AppRoot extends React.Component {
 					</div>
 				</div>
 
-				{ options }
+				{ options() }
 
 
 				{/*
