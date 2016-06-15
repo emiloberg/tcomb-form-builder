@@ -161,15 +161,13 @@ export default class AppRoot extends React.Component {
 						/>
 					</div>
 					<div className={ styles.colEditor }>
-						<div className={ styles.colEditorInner }>
-							<List
-								fullOrder={ this.state.order }
-								defs={ this.state.defs }
-								selected={ this.state.selected }
-								onChange={ this.onChangeList }
-								onClick={ this.onClickList }
+						<List
+							fullOrder={ this.state.order }
+							defs={ this.state.defs }
+							selected={ this.state.selected }
+							onChange={ this.onChangeList }
+							onClick={ this.onClickList }
 						/>
-						</div>
 					</div>
 
 					{ options() }

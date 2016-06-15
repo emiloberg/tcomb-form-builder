@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './TcombFormBuilder.scss';
+import styles from './ItemControls.scss';
 
 const ItemControls = ({ show, order, listId, nodeId, onChange, isWrapper }) => { //eslint-disable-line react/no-multi-comp
 

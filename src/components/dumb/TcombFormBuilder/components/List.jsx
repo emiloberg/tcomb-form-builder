@@ -3,7 +3,7 @@
 
 import React from 'react';
 import Sortable from 'react-sortablejs';
-import styles from './TcombFormBuilder.scss';
+import styles from './List.scss';
 import classnames from 'classnames';
 
 import convertSingleStateToTcomb from '../converters/convertSingleStateToTcomb';

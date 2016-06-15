@@ -1,6 +1,6 @@
 import React from 'react';
 import Sortable from 'react-sortablejs';
-import styles from './TcombFormBuilder.scss';
+import styles from './Widgets.scss';
 
 const Widgets = ({ widgetsList }) => {
 	const listItems = Object.keys(widgetsList).map(key => {

@@ -1,0 +1,28 @@
+.controlButton {
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    border: 0;
+    background-color: #C0C0C0;
+}
+
+.controlButton:hover {
+    background-color: #aaa;
+}
+
+.controlButton:focus {
+    outline: 1px solid #464646;
+    outline-offset: -1px;
+}
+
+.itemControl {
+    position: absolute;
+    right: -16px;
+    top: -16px;
+}
+
+.itemControlWrapper {
+    position: absolute;
+    right: 0;
+    top: -16px;
+}

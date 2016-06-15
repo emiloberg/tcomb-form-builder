@@ -1,0 +1,25 @@
+.widgetItem {
+    width: calc(100% - 32px);
+    padding: 8px;
+    margin: 16px;
+    border: 1px solid #717171;
+    background-color: #535353;
+    color: #E7E7E7;
+    cursor: move;
+    text-align: center;
+}
+
+//
+//.chosen {
+//    background-color: #6b6b6b;
+//    opacity: .25;
+//}
+
+.chosen.ghost .itemChild {
+    display: none;
+}
+
+.ghost {
+    background-color: #6b6b6b;
+    opacity: 1;
+}
