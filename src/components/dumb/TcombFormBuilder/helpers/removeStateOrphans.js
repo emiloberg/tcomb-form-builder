@@ -1,27 +1,21 @@
+import clone from 'clone';
+
 function removeStateOrphans({ defs, order }) {
-	const fixedDefs = { ...defs };
-	const fixedOrder = { ...order };
-
-	const listOfAllCurrentIds = getListOfAllIds({ order: fixedOrder });
-
-	// Clean Defs
-	Object.keys(fixedDefs).forEach(key => {
-		if (listOfAllCurrentIds.indexOf(key) === -1) {
-			delete fixedDefs[key];
-		}
-	});
-
-	// Clean order
-	Object.keys(fixedOrder).forEach(key => {
-		if (listOfAllCurrentIds.indexOf(key) === -1) {
-			delete fixedOrder[key];
-		}
-	});
-
+	const listOfValidIds = getListOfAllIds({ order });
 	return {
-		defs: fixedDefs,
-		order: fixedOrder
+		defs: cleanDefsOrOrder({ listOfValidIds, defsOrOrder: defs }),
+		order: cleanDefsOrOrder({ listOfValidIds, defsOrOrder: order })
 	};
+}
+
+function cleanDefsOrOrder({ listOfValidIds, defsOrOrder }) {
+	const fixedDefsOrOrder = clone(defsOrOrder);
+	Object.keys(fixedDefsOrOrder).forEach(key => {
+		if (listOfValidIds.indexOf(key) === -1) {
+			delete fixedDefsOrOrder[key];
+		}
+	});
+	return fixedDefsOrOrder;
 }
 
 /**
@@ -34,8 +28,8 @@ function removeStateOrphans({ defs, order }) {
  */
 function getListOfAllIds({ order }) {
 	function walk({ nextId }) {
-		if (!order[nextId]) {
-			return nextId;
+		if (!order[nextId] || order[nextId].length === 0) {
+			return [nextId];
 		}
 
 		return order[nextId].map((id) => {

@@ -11,7 +11,8 @@ import TCombForm from './TCombForm';
 import ItemControls from './ItemControls';
 
 const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick }) => { //eslint-disable-line react/no-multi-comp
-	const listItems = fullOrder[listId].map((curNodeId, key) => {
+	const curList = fullOrder[listId] || [];
+	const listItems = curList.map((curNodeId, key) => {
 		const isWrapper = defs[curNodeId].schema.type === 'object';
 		const curNodeChildren = fullOrder[curNodeId];
 		const childs = curNodeChildren && curNodeChildren.length //eslint-disable-line no-nested-ternary
@@ -109,9 +110,12 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 		);
 	});
 
+	const styleSortable = !!curList.length ? null : styles.placeholder;
+
 	return (
 		<div>
 			<Sortable
+				className={ styleSortable }
 				options={{
 					group: {
 						name: 'clone',
