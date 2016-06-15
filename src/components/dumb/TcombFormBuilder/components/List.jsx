@@ -32,7 +32,10 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 							pull: false,
 							put: true
 						},
-						animation: 180
+						chosenClass: styles.chosen,
+						ghostClass: styles.ghost,
+						animation: 180,
+						delay: 140
 					}}
 					onChange={(newOrder) => {
 						onChange({ newOrder, listId: curNodeId });
@@ -59,19 +62,21 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 					onClick(curNodeId);
 				}}
 			>
-				<div className={ styles.itemHeader}>
+				<div>
 					{
 						isWrapper
 							? <div className={ styles.listItemWrapper }>
 								<label className={ styles.labelForWrapper }>{defs[curNodeId].name}</label>
-								<ItemControls
-									show={ selected === curNodeId }
-									order={ fullOrder[listId] }
-									nodeId={ curNodeId }
-									listId={ listId }
-									onChange={ onChange }
-									isWrapper
-								/>
+								<div className={ styles.itemControls }>
+									<ItemControls
+										show={ selected === curNodeId }
+										order={ fullOrder[listId] }
+										nodeId={ curNodeId }
+										listId={ listId }
+										onChange={ onChange }
+										isWrapper
+									/>
+								</div>
 							</div>
 							: null
 					}
@@ -79,16 +84,19 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 				{
 					!isWrapper
 						? <div className={ styles.listItemWrapper }>
+							<div className={ styles.dragName }>{ defs[curNodeId].name }</div>
 							<div className={ styles.itemForm }>
 								<TCombForm isEditMode formDef={ convertSingleStateToTcomb(defs[curNodeId]) }/>
 							</div>
-							<ItemControls
-								show={ selected === curNodeId }
-								order={ fullOrder[listId] }
-								nodeId={ curNodeId }
-								listId={ listId }
-								onChange={ onChange }
-							/>
+							<div className={ styles.itemControls }>
+								<ItemControls
+									show={ selected === curNodeId }
+									order={ fullOrder[listId] }
+									nodeId={ curNodeId }
+									listId={ listId }
+									onChange={ onChange }
+								/>
+							</div>
 						</div>
 						: null
 				}
@@ -113,6 +121,7 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 					chosenClass: styles.chosen,
 					ghostClass: styles.ghost,
 					animation: 180,
+					delay: 140,
 					onStart: (e) => {
 						e.stopPropagation();
 						onClick(e.item.dataset.id);

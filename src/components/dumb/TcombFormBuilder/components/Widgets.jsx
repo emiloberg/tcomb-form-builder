@@ -24,8 +24,8 @@ const Widgets = ({ widgetsList }) => {
 						pull: 'clone',
 						put: false
 					},
-					chosenClass: styles.chosen,
-					ghostClass: styles.ghost,
+					//chosenClass: styles.chosen,
+					//ghostClass: styles.ghost,
 					animation: 180,
 					sort: false
                 }}
