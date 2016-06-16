@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 
 import React from 'react';
-
+import classnames from 'classnames';
 import { v4 } from 'uuid';
 import List from './List';
 import Widgets from './Widgets';
 import Options from './Options';
 import FullForm from './FullForm';
+import HeaderBar from './HeaderBar';
 import Json from './Json';
 import convertTcombDefToState from '../converters/convertTcombDefToState';
 import convertStateToTcomb from './../converters/convertStateToTcomb';
@@ -31,11 +32,16 @@ export default class AppRoot extends React.Component {
 			order: initOrder,
 			defs: initDefs,
 			widgetDefs: initWidgetDefs,
-			optionsTop: 0
+			optionsTop: 0,
+			mode: 'edit'
 		};
 		this.onChangeList = this.onChangeList.bind(this);
 		this.onClickList = this.onClickList.bind(this);
 		this.onChangeOptions = this.onChangeOptions.bind(this);
+		this.selectRoot = this.selectRoot.bind(this);
+		this.setModeForm = this.changeMode.bind(this, { mode: 'form' });
+		this.setModeEdit = this.changeMode.bind(this, { mode: 'edit' });
+		this.setModeJson = this.changeMode.bind(this, { mode: 'json' });
 	}
 
 	onClickList(itemId) {
@@ -120,6 +126,14 @@ export default class AppRoot extends React.Component {
 		});
 	}
 
+	changeMode({ mode }) {
+		this.setState({ mode });
+	}
+
+	selectRoot() {
+		this.setState({ selected: 'root' });
+	}
+
 	render() {
 		const formDef = convertStateToTcomb({
 			order: this.state.order,
@@ -152,43 +166,54 @@ export default class AppRoot extends React.Component {
 			) : null;
 		};
 
+		const editMode = (
+			<div className={ styles.pageWrap }>
+				<div className={ styles.colWidgets }>
+					<Widgets
+						widgetsList={ initWidgetDefs }
+					/>
+				</div>
+				<div className={ styles.colEditor }>
+					<List
+						fullOrder={ this.state.order }
+						defs={ this.state.defs }
+						selected={ this.state.selected }
+						onChange={ this.onChangeList }
+						onClick={ this.onClickList }
+					/>
+				</div>
+				{ options() }
+			</div>
+		);
+
+		const formMode = (
+			<div className={ styles.fullFormWrapper }>
+				<FullForm
+					formDef={ formDef }
+				/>
+			</div>
+		);
+
+		const jsonMode = (
+			<div>
+				<Json formDef={ formDef }/>
+			</div>
+		);
+
+		let mode = editMode;
+		if (this.state.mode === 'form') { mode = formMode; }
+		if (this.state.mode === 'json') { mode = jsonMode; }
+
 		return (
 			<div>
-				<div className={ styles.pageWrap }>
-					<div className={ styles.colWidgets }>
-						<Widgets
-							widgetsList={ initWidgetDefs }
-						/>
-					</div>
-					<div className={ styles.colEditor }>
-						<List
-							fullOrder={ this.state.order }
-							defs={ this.state.defs }
-							selected={ this.state.selected }
-							onChange={ this.onChangeList }
-							onClick={ this.onClickList }
-						/>
-					</div>
-
-					{ options() }
-
-
-					{/*
-					<div className={ styles.fullFormWrapper }>
-						<FullForm
-							formDef={ formDef }
-						/>
-					</div>
-
-
-					<div className={ styles.json }>
-
-					</div>
-					 */}
-
-				</div>
-				<Json formDef={ formDef }/>
-				<Json formDef={ this.state }/>
+				<HeaderBar
+					currentMode={ this.state.mode }
+					setModeEdit={ this.setModeEdit }
+					setModeJson={ this.setModeJson }
+					setModeForm={ this.setModeForm }
+					selectRoot={ this.selectRoot }
+				/>
+				{ mode }
 			</div>
 		);
 	}
