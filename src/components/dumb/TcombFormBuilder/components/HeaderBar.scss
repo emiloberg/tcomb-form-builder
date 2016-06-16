@@ -33,6 +33,7 @@
 }
 
 .headerButton:hover,
+.headerButton:focus,
 .headerButton:active {
     background-color: #F3F3F3;
     outline: 0;
@@ -51,4 +52,3 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
-

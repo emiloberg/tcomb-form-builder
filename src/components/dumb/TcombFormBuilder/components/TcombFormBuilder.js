@@ -105,16 +105,7 @@ export default class AppRoot extends React.Component {
 			selected
 		});
 
-		if (selected) {
-			setTimeout(() => {
-				const el = document.getElementById('item-' + selected);
-				if (el) {
-					this.setState({
-						optionsTop: document.getElementById('item-' + selected).offsetTop
-					});
-				}
-			}, 0);
-		}
+		this.recalculateOptionsPosition({ selected });
 	}
 
 	onChangeOptions({ def, id }) {
@@ -126,12 +117,28 @@ export default class AppRoot extends React.Component {
 		});
 	}
 
+	recalculateOptionsPosition({ selected }) {
+		if (selected) {
+			setTimeout(() => {
+				if (selected === 'root') {
+					this.setState({ optionsTop: 20 }); // 0 + margin
+				} else {
+					const el = document.getElementById('item-' + selected);
+					if (el) {
+						this.setState({optionsTop: document.getElementById('item-' + selected).offsetTop});
+					}
+				}
+			}, 0);
+		}
+	};
+
 	changeMode({ mode }) {
 		this.setState({ mode });
 	}
 
 	selectRoot() {
 		this.setState({ selected: 'root' });
+		this.recalculateOptionsPosition({ selected: 'root' });
 	}
 
 	render() {
@@ -155,6 +162,7 @@ export default class AppRoot extends React.Component {
 			return isSelectedAvailable ? (
 				<div className={ styles.colOptions } style={ optionsStyle }>
 					<div className={ styles.colOptionsInner }>
+						<div className={ styles.optionsArrow }></div>
 						<Options
 							defs={ this.state.defs }
 							selected={ this.state.selected }
@@ -174,13 +182,29 @@ export default class AppRoot extends React.Component {
 					/>
 				</div>
 				<div className={ styles.colEditor }>
-					<List
-						fullOrder={ this.state.order }
-						defs={ this.state.defs }
-						selected={ this.state.selected }
-						onChange={ this.onChangeList }
-						onClick={ this.onClickList }
-					/>
+					<div className={ styles.colEditorInner }>
+						<div className={ styles.editorTitleWrapper }>
+							<span className={ styles.editorTitle }>Edit</span>
+							<button
+								className={
+									classnames({
+										[styles.formSettingsButton]: true,
+										[styles.formSettingsButtonActive]: this.state.selected === 'root'
+									})
+								}
+								onClick={ this.selectRoot }
+							>
+								Form Settings
+							</button>
+						</div>
+						<List
+							fullOrder={ this.state.order }
+							defs={ this.state.defs }
+							selected={ this.state.selected }
+							onChange={ this.onChangeList }
+							onClick={ this.onClickList }
+						/>
+					</div>
 				</div>
 				{ options() }
 			</div>
@@ -211,7 +235,6 @@ export default class AppRoot extends React.Component {
 					setModeEdit={ this.setModeEdit }
 					setModeJson={ this.setModeJson }
 					setModeForm={ this.setModeForm }
-					selectRoot={ this.selectRoot }
 				/>
 				{ mode }
 			</div>
