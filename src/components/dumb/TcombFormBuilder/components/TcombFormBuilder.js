@@ -167,10 +167,10 @@ export default class AppRoot extends React.Component {
 				<div className={ styles.colOptions } style={ optionsStyle }>
 					<div className={ styles.colOptionsMiddle } >
 						<div className={ styles.optionsArrow }></div>
-						<div className={ styles.boxTitle } >
-							Options
-						</div>
 						<div className={ styles.colOptionsInner }>
+							<div className={ styles.boxTitle } >
+								Options
+							</div>
 							<Options
 								defs={ this.state.defs }
 								selected={ this.state.selected }
@@ -245,7 +245,7 @@ export default class AppRoot extends React.Component {
 		if (this.state.mode === 'json') { mode = jsonMode; }
 
 		return (
-			<div>
+			<div className={ styles.component }>
 				<HeaderBar
 					currentMode={ this.state.mode }
 					setModeEdit={ this.setModeEdit }
