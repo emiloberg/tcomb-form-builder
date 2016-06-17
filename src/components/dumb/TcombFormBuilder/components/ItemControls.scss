@@ -15,6 +15,10 @@
     outline-offset: -1px;
 }
 
+.controlButton:first-child {
+    border-bottom-left-radius: 5px;
+}
+
 .itemControl {
     position: absolute;
     right: -16px;

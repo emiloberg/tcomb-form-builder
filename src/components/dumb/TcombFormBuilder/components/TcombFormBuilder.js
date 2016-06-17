@@ -161,6 +161,11 @@ export default class AppRoot extends React.Component {
 			const isSelectedAvailable = this.state.selected && flatOrder.indexOf(this.state.selected) > -1;
 			return isSelectedAvailable ? (
 				<div className={ styles.colOptions } style={ optionsStyle }>
+					<div className={ styles.optionsTitle } >
+						<div className={ styles.optionsTitleInner } >
+							Options
+						</div>
+					</div>
 					<div className={ styles.colOptionsInner }>
 						<div className={ styles.optionsArrow }></div>
 						<Options
@@ -184,7 +189,7 @@ export default class AppRoot extends React.Component {
 				<div className={ styles.colEditor }>
 					<div className={ styles.colEditorInner }>
 						<div className={ styles.editorTitleWrapper }>
-							<span className={ styles.editorTitle }>Edit</span>
+							<span className={ styles.editorTitle }>Edit Form</span>
 							<button
 								className={
 									classnames({

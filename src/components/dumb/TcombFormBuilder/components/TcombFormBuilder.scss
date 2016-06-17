@@ -11,7 +11,7 @@
 
 .colOptionsInner {
     color: #E7E7E7;
-    background-color: #535353;
+    background-color: #464646;
     padding: 10px;
 }
 
@@ -82,5 +82,18 @@
     height: 0;
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-right: 10px solid #535353;
+    border-right: 10px solid #464646;
+}
+
+.optionsTitle {
+    padding: 0 8px;
+    background-color: #464646;
+}
+
+.optionsTitleInner {
+    height: 30px;
+    line-height: 30px;
+    color: #E7E7E7;
+    font-weight: 700;
+    border-bottom: 1px solid #6d6d6d;
 }
