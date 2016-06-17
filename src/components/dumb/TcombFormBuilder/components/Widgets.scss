@@ -1,10 +1,13 @@
 .widgetItem {
-    width: calc(100% - 32px);
     padding: 8px;
-    margin: 16px;
+    margin: 8px 16px;
     border: 1px solid #717171;
     background-color: #535353;
     color: #E7E7E7;
     cursor: move;
     text-align: center;
+}
+
+.widgetItem:last-child {
+    margin-bottom: 0;
 }

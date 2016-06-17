@@ -2,6 +2,7 @@
 
 import React from 'react';
 import classnames from 'classnames';
+import StickyDiv from 'react-stickydiv';
 import { v4 } from 'uuid';
 import List from './List';
 import Widgets from './Widgets';
@@ -125,12 +126,12 @@ export default class AppRoot extends React.Component {
 				} else {
 					const el = document.getElementById('item-' + selected);
 					if (el) {
-						this.setState({optionsTop: document.getElementById('item-' + selected).offsetTop});
+						this.setState({ optionsTop: document.getElementById('item-' + selected).offsetTop });
 					}
 				}
 			}, 0);
 		}
-	};
+	}
 
 	changeMode({ mode }) {
 		this.setState({ mode });
@@ -148,8 +149,11 @@ export default class AppRoot extends React.Component {
 		});
 
 		const optionsStyle = {
-			transition: 'transform 180ms',
-			transform: 'translateY(' + this.state.optionsTop + 'px)'
+			//transition: 'transform 180ms',
+			//transform: 'translateY(' + this.state.optionsTop + 'px)'
+			paddingTop: this.state.optionsTop,
+			transition: 'padding 180ms',
+
 		};
 
 		const options = () => {
@@ -161,19 +165,19 @@ export default class AppRoot extends React.Component {
 			const isSelectedAvailable = this.state.selected && flatOrder.indexOf(this.state.selected) > -1;
 			return isSelectedAvailable ? (
 				<div className={ styles.colOptions } style={ optionsStyle }>
-					<div className={ styles.optionsTitle } >
-						<div className={ styles.optionsTitleInner } >
+					<div className={ styles.colOptionsMiddle } >
+						<div className={ styles.optionsArrow }></div>
+						<div className={ styles.boxTitle } >
 							Options
 						</div>
-					</div>
-					<div className={ styles.colOptionsInner }>
-						<div className={ styles.optionsArrow }></div>
-						<Options
-							defs={ this.state.defs }
-							selected={ this.state.selected }
-							onChange={ this.onChangeOptions }
-							optionsDefs={ optionsDefs }
-						/>
+						<div className={ styles.colOptionsInner }>
+							<Options
+								defs={ this.state.defs }
+								selected={ this.state.selected }
+								onChange={ this.onChangeOptions }
+								optionsDefs={ optionsDefs }
+							/>
+						</div>
 					</div>
 				</div>
 			) : null;
@@ -182,9 +186,16 @@ export default class AppRoot extends React.Component {
 		const editMode = (
 			<div className={ styles.pageWrap }>
 				<div className={ styles.colWidgets }>
-					<Widgets
-						widgetsList={ initWidgetDefs }
-					/>
+					<StickyDiv
+						offsetTop={ 16 }
+					>
+					<div className={ styles.colWidgetsInner }>
+						<div className={ styles.boxTitle } >
+							Widgets
+						</div>
+						<Widgets widgetsList={ initWidgetDefs } />
+					</div>
+					</StickyDiv>
 				</div>
 				<div className={ styles.colEditor }>
 					<div className={ styles.colEditorInner }>
