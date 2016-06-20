@@ -109,7 +109,7 @@ export default function convertTcombDefToState(tcombDef) {
 
 	walk({
 		schema: tcombDef.schema,
-		propName: 'Root',
+		propName: 'root',
 		isRoot: true
 	});
 
