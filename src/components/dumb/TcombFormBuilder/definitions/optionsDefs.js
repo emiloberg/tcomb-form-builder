@@ -1,5 +1,6 @@
 const optionsDefs = {
 	string: {
+		enableEnum: true,
 		schema:  {
 			properties: {
 				type:     { type: 'string' },
@@ -10,12 +11,6 @@ const optionsDefs = {
 				disabled: { type: 'boolean' },
 				defaultValue: { type: 'string' },
 				required: { type: 'boolean' },
-				enum: {
-					type: 'array',
-					items: {
-						type: 'string'
-					}
-				},
 				factory: {
 					type: 'string',
 					enum: [
@@ -24,7 +19,7 @@ const optionsDefs = {
 				},
 				disableNullOption: { type: 'boolean' },
 				nullOptionValue: { type: 'string' },
-				nullOptionText: { type: 'string' }
+				nullOptionText: { type: 'string' },
 			},
 			type: 'object'
 		},
@@ -57,12 +52,6 @@ const optionsDefs = {
 				defaultValue: { type: 'string' },
 				disabled: { type: 'boolean' },
 				required: { type: 'boolean' },
-				enum: {
-					type: 'array',
-					items: {
-						type: 'number'
-					}
-				},
 				factory: {
 					type: 'string',
 					enum: [
@@ -119,6 +108,8 @@ const optionsDefs = {
 				type:     { type: 'string' },
 				name:     { type: 'string' },
 				label:    { type: 'string' },
+				help:    { type: 'string' },
+				legend:    { type: 'string' },
 				hide:     { type: 'boolean' },
 				disabled: { type: 'boolean' }
 			},
@@ -135,9 +126,10 @@ const optionsDefs = {
 		factory: 'options.factory',
 		nullOptionValue: 'options.nullOption.value',
 		nullOptionText: 'options.nullOption.text',
-		enum: 'schema.enum',
 		type: 'schema.type',
 		pattern: 'schema.pattern',
+		help: 'options.help',
+		legend: 'options.legend',
 		label: 'options.label',
 		disabled: 'options.disabled',
 		defaultValue: 'value',

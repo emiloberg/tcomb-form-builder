@@ -86,6 +86,11 @@ const formDef = {
 		help: 'This is my help text<br>Apa boll',
 		fields: {
 			aTextbox: {
+				options: [
+					{ value: 'a', text: 'AAA' },
+					{ value: 'b', text: 'BBB' },
+					{ value: 'c', text: 'CCC' }
+				]
 			},
 			//anObject: {
 			//	fields: {

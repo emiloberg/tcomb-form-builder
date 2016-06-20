@@ -9,7 +9,10 @@ import TCombForm from './TCombForm';
 import objectPath from 'object-path';
 
 function transformStateToOptionsDef({ itemDef, optionsDef }) {
-	const out = { ...optionsDef[itemDef.schema.type] };
+	const out = {
+		options: { ...optionsDef[itemDef.schema.type].options },
+		schema: { ...optionsDef[itemDef.schema.type].schema }
+	};
 	Object.keys(optionsDef.crossReference).forEach(key => {
 		const val = objectPath.get(itemDef, optionsDef.crossReference[key]);
 		objectPath.set(out, ['value', key], val);
@@ -19,6 +22,26 @@ function transformStateToOptionsDef({ itemDef, optionsDef }) {
 
 	// Disable rename of root
 	objectPath.set(out, 'options.fields.name.disabled', (itemDef.name === 'root'));
+
+	// Add options for Enums
+	if (optionsDef[itemDef.schema.type].enableEnum) {
+		out.value.enum = objectPath.get(itemDef.options.options);
+		out.schema.properties.enum = {
+			type:  'array',
+			items: {
+				properties: {
+					value: {
+						type: 'string'
+					},
+					text:  {
+						type: 'string'
+					}
+				},
+				type:       'object'
+			},
+		};
+	}
+
 	return out;
 }
 
@@ -46,6 +69,14 @@ function transformOptionsDefToState({ formValues, crossReference }) {
 	// TODO: We might need to add this to the full render mode as well
 	if (out.disableNullOption) {
 		out.options.nullOption = false;
+	}
+
+	/**
+	 * Enum options
+	 */
+	if (formValues.enum) {
+		objectPath.set(out, 'options.options', formValues.enum.map(cur => ({text: cur.text, value: cur.value})));
+		objectPath.set(out, 'schema.enum', formValues.enum.map(cur => cur.value));
 	}
 
 	return out;
