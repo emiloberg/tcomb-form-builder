@@ -63,7 +63,6 @@ const TCombForm = React.createClass({ //eslint-disable-line react/no-multi-comp
 
 		return (
 			<div>
-				{Comment}
 				<form style={ stylesForm }>
 					<t.form.Form
 						ref="form"
