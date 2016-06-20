@@ -15,6 +15,7 @@ import convertStateToTcomb from './../converters/convertStateToTcomb';
 import removeStateOrphans from './../helpers/removeStateOrphans';
 import styles from './TcombFormBuilder.scss';
 import optionsDefs from '../definitions/optionsDefs';
+import objectPath from 'object-path';
 
 import sampleFormDef from '../definitions/sampleFormDef';
 
@@ -183,6 +184,10 @@ export default class AppRoot extends React.Component {
 			) : null;
 		};
 
+		const formName = objectPath.get(this.state.defs, 'root.options.label') ||
+			objectPath.get(this.state.defs, 'root.options.legend') ||
+			'unnamed form';
+
 		const editMode = (
 			<div className={ styles.pageWrap }>
 				<div className={ styles.colWidgets }>
@@ -200,7 +205,7 @@ export default class AppRoot extends React.Component {
 				<div className={ styles.colEditor }>
 					<div className={ styles.colEditorInner }>
 						<div className={ styles.editorTitleWrapper }>
-							<span className={ styles.editorTitle }>Edit Form</span>
+							<span className={ styles.editorTitle }>{ formName }</span>
 							<button
 								className={
 									classnames({
