@@ -67,7 +67,7 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 					{
 						isWrapper
 							? <div className={ styles.listItemWrapper }>
-								<label className={ styles.labelForWrapper }>{defs[curNodeId].name}</label>
+								<label className={ styles.labelForWrapper }>{defs[curNodeId].options.label || defs[curNodeId].name}</label>
 								<div className={ styles.itemControls }>
 									<ItemControls
 										show={ selected === curNodeId }
@@ -85,7 +85,7 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 				{
 					!isWrapper
 						? <div className={ styles.listItemWrapper }>
-							<div className={ styles.dragName }>{ defs[curNodeId].name }</div>
+							<div className={ styles.dragName }>{ defs[curNodeId].options.label || defs[curNodeId].name }</div>
 							<div className={ styles.itemForm }>
 								<TCombForm isEditMode formDef={ convertSingleStateToTcomb(defs[curNodeId]) }/>
 							</div>
@@ -142,28 +142,5 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 		</div>
 	);
 };
-
-
-//onEnd={() => {
-//	console.log('onEnd');
-//}}
-//onAdd={() => {
-//	console.log('onAdd');
-//}}
-//onSort={() => {
-//	console.log('onSort');
-//}}
-//onUpdate={() => {
-//	console.log('onUpdate');
-//}}
-//onRemove={() => {
-//	console.log('onRemove');
-//}}
-//onFilter={() => {
-//	console.log('onFilter');
-//}}
-//onMove={() => {
-//	console.log('onMove');
-//}}
 
 export default List;
