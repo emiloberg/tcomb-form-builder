@@ -17,6 +17,8 @@ function transformStateToOptionsDef({ itemDef, optionsDef }) {
 	out.value.name = itemDef.name;
 	out.value.hide = !itemDef.show;
 
+	// Disable rename of root
+	objectPath.set(out, 'options.fields.name.disabled', (itemDef.name === 'root'));
 	return out;
 }
 
