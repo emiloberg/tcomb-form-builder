@@ -24,7 +24,14 @@ export default function convertStateToTcomb({ order, defs }) {
 		const hasChilds = childIds.length > 0;
 		if (hasChilds) {
 			// Set order
-			const curOrder = childIds.map(curItemId => defs[curItemId].name);
+			// Exclude hidden fields from order
+			const curOrder = childIds.map(curItemId => {
+				if (defs[curItemId].show) {
+					return defs[curItemId].name;
+				}
+				return null;
+			})
+			.filter(cur => cur !== null);
 			objectPath.set(out, ['options', ...optionsPath, 'order'], curOrder);
 
 			// Set required
