@@ -253,6 +253,7 @@ export default class AppRoot extends React.Component {
 		let mode = editMode;
 		if (this.state.mode === 'form') { mode = formMode; }
 		if (this.state.mode === 'json') { mode = jsonMode; }
+		const disablePreview = !formDef.schema.hasOwnProperty('properties');
 
 		return (
 			<div className={ styles.component }>
@@ -261,6 +262,7 @@ export default class AppRoot extends React.Component {
 					setModeEdit={ this.setModeEdit }
 					setModeJson={ this.setModeJson }
 					setModeForm={ this.setModeForm }
+					disablePreview={disablePreview}
 				/>
 				{ mode }
 			</div>

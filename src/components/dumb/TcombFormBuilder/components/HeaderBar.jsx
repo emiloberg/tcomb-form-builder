@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import styles from './HeaderBar.scss';
 
-const Button = ({ onClick, currentMode, mode, children }) => ( //eslint-disable-line react/no-multi-comp
+const Button = ({ onClick, currentMode, mode, children, disablePreview }) => ( //eslint-disable-line react/no-multi-comp
 	<button
 		className={
 			classnames({
@@ -12,17 +12,19 @@ const Button = ({ onClick, currentMode, mode, children }) => ( //eslint-disable-
 			})
 		}
 		onClick={ onClick }
+		disabled={ disablePreview }
 	>
 		{children}
 	</button>
 );
 
-const HeaderBar = ({ currentMode, setModeEdit, setModeJson, setModeForm, selectRoot }) => ( //eslint-disable-line react/no-multi-comp
+const HeaderBar = ({ currentMode, setModeEdit, setModeJson, setModeForm, setModeState, disablePreview, selectRoot }) => ( //eslint-disable-line react/no-multi-comp
 	<div className={ styles.headerBar }>
 		<div className={ styles.headerButtonGroup }>
 			<Button onClick={ setModeEdit } currentMode={ currentMode } mode="edit">Edit</Button>
 			<Button onClick={ setModeJson } currentMode={ currentMode } mode="json">JSON</Button>
-			<Button onClick={ setModeForm } currentMode={ currentMode } mode="form">Preview</Button>
+			<Button onClick={ setModeState } currentMode={ currentMode } mode="state">State</Button>
+			<Button onClick={ setModeForm } currentMode={ currentMode } mode="form" disablePreview={ disablePreview }>Preview</Button>
 		</div>
 	</div>
 );

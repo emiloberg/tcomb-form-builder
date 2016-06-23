@@ -32,11 +32,15 @@
     background-color: #F3F3F3;
 }
 
-.headerButton:hover,
+.headerButton:hover:not(:disabled),
 .headerButton:focus,
 .headerButton:active {
     background-color: #F3F3F3;
     outline: 0;
+}
+
+.headerButton:disabled {
+    background-color: #696969;
 }
 
 .headerButtonGroup .headerButton {
