@@ -186,7 +186,7 @@ export default class AppRoot extends React.Component {
 						</div>
 					</div>
 				</div>
-			) : null;
+			) : <div className={ styles.colOptions }></div>;
 		};
 
 		const formName = objectPath.get(this.state.defs, 'root.options.label') ||
