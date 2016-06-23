@@ -112,6 +112,12 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 
 	const styleSortable = !!curList.length ? null : styles.placeholder;
 
+	/**
+	 * If the item is an array which already has an item in it, then we disallow
+	 * adding more items (as arrays can only have 1 item)
+	 */
+	const allowPut = !(defs[listId].schema.type === 'array' && !!curList.length);
+
 	return (
 		<div>
 			<Sortable
@@ -120,7 +126,7 @@ const List = ({ fullOrder, defs, listId = 'root', selected, onChange, onClick })
 					group: {
 						name: 'clone',
 						pull: true,
-						put: true
+						put: allowPut
 					},
 					chosenClass: styles.chosen,
 					ghostClass: styles.ghost,
