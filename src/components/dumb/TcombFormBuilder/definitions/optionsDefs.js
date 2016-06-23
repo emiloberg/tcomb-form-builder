@@ -8,6 +8,7 @@ const optionsDefs = {
 				label:    { type: 'string' },
 				hide:     { type: 'boolean' },
 				pattern:  { type: 'string' },
+				error:  { type: 'string' },
 				disabled: { type: 'boolean' },
 				defaultValue: { type: 'string' },
 				required: { type: 'boolean' },
@@ -49,6 +50,7 @@ const optionsDefs = {
 				label:    { type: 'string' },
 				hide:     { type: 'boolean' },
 				pattern:  { type: 'string' },
+				error:  { type: 'string' },
 				defaultValue: { type: 'string' },
 				disabled: { type: 'boolean' },
 				required: { type: 'boolean' },
@@ -90,6 +92,7 @@ const optionsDefs = {
 				label:    { type: 'string' },
 				hide:     { type: 'boolean' },
 				pattern:  { type: 'string' },
+				error:  { type: 'string' },
 				defaultValue: { type: 'boolean' },
 				disabled: { type: 'boolean' },
 				required: { type: 'boolean' }
@@ -109,6 +112,7 @@ const optionsDefs = {
 				name:     { type: 'string' },
 				label:    { type: 'string' },
 				help:    { type: 'string' },
+				error:  { type: 'string' },
 				legend:    { type: 'string' },
 				hide:     { type: 'boolean' },
 				disabled: { type: 'boolean' }
@@ -129,6 +133,7 @@ const optionsDefs = {
 				label:    { type: 'string' },
 				help:    { type: 'string' },
 				legend:    { type: 'string' },
+				error:  { type: 'string' },
 				hide:     { type: 'boolean' },
 				disabled: { type: 'boolean' },
 				disableAdd: { type: 'boolean' },
@@ -146,6 +151,7 @@ const optionsDefs = {
 	crossReference: {
 		disableNullOption: 'disableNullOption',
 		factory: 'options.factory',
+		error: 'options.error',
 		nullOptionValue: 'options.nullOption.value',
 		nullOptionText: 'options.nullOption.text',
 		type: 'schema.type',

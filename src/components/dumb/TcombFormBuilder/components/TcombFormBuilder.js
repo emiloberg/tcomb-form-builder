@@ -35,12 +35,14 @@ export default class AppRoot extends React.Component {
 			defs: initDefs,
 			widgetDefs: initWidgetDefs,
 			optionsTop: 0,
-			mode: 'edit'
+			mode: 'edit',
+			showErrors: false
 		};
 		this.onChangeList = this.onChangeList.bind(this);
 		this.onClickList = this.onClickList.bind(this);
 		this.onChangeOptions = this.onChangeOptions.bind(this);
 		this.selectRoot = this.selectRoot.bind(this);
+		this.onChangeShowErrors = this.onChangeShowErrors.bind(this);
 		this.setModeForm = this.changeMode.bind(this, { mode: 'form' });
 		this.setModeEdit = this.changeMode.bind(this, { mode: 'edit' });
 		this.setModeJson = this.changeMode.bind(this, { mode: 'json' });
@@ -115,6 +117,12 @@ export default class AppRoot extends React.Component {
 		this.recalculateOptionsPosition({ selected });
 	}
 
+	onChangeShowErrors() {
+		this.setState({
+			showErrors: !this.state.showErrors
+		});
+	}
+
 	onChangeOptions({ def, id }) {
 		this.setState({
 			defs: {
@@ -149,9 +157,14 @@ export default class AppRoot extends React.Component {
 	}
 
 	render() {
+		const forceErrors = this.state.mode === 'form'
+			? this.state.showErrors
+			: false;
+
 		const formDef = convertStateToTcomb({
 			order: this.state.order,
-			defs: this.state.defs
+			defs: this.state.defs,
+			forceErrors
 		});
 
 		const optionsStyle = {
@@ -237,10 +250,23 @@ export default class AppRoot extends React.Component {
 		);
 
 		const formMode = (
+			<div>
+				<div className={ styles.subBar }>
+					<label className={ styles.checkbox }>
+						<input
+							type="checkbox"
+							checked={this.state.showErrors}
+							onChange={this.onChangeShowErrors}
+						/>
+						<span className={ styles.checkboxLabel }>Preview errors</span>
+					</label>
+				</div>
+
 			<div className={ styles.fullFormWrapper }>
 				<FullForm
 					formDef={ formDef }
 				/>
+			</div>
 			</div>
 		);
 

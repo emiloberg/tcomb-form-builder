@@ -1,10 +1,10 @@
-export default function convertStateToTcomb({ order, defs }) {
+export default function convertStateToTcomb({ order, defs, forceErrors }) {
 	return {
 		schema: {
 			...walk({ walkType: 'schema' })
 		},
 		options: {
-			...walk({ walkType: 'options' })
+			...walk({ walkType: 'options', forceErrors })
 		},
 		value: {
 			...walkValue({})
@@ -16,6 +16,13 @@ export default function convertStateToTcomb({ order, defs }) {
 		const out = {
 			...defs[id][walkType]
 		};
+
+		/**
+		 * Force display of errors
+		 */
+		if (forceErrors) {
+			out.hasError = true;
+		}
 
 		const propIsArray = defs[id].schema.type === 'array';
 		const childIds = order[id];
