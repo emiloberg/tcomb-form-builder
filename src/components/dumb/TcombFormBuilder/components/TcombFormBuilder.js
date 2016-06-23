@@ -256,7 +256,10 @@ export default class AppRoot extends React.Component {
 		const disablePreview = !formDef.schema.hasOwnProperty('properties');
 
 		return (
-			<div className={ styles.component }>
+			<div className={ classnames({
+				[styles.component]: true,
+				[styles.componentPreview]: this.state.mode === 'form'
+			})}>
 				<HeaderBar
 					currentMode={ this.state.mode }
 					setModeEdit={ this.setModeEdit }
