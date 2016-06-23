@@ -77,19 +77,25 @@ export default function convertStateToTcomb({ order, defs }) {
 			 * Get the childs
 			 */
 			const childDataArr = childIds.map(curId => {
+				const walker = walkValue({ id: curId, walkType });
+				if (!walker) { return null; }
 				return {
-					[defs[curId].name]: walkValue({ id: curId, walkType })
+					[defs[curId].name]: walker
 				};
-			});
+			})
+			.filter(cur => !!cur);
 
 			/**
 			 * If it's an array, return the first value (arrays can
 			 * only have 1 value)
 			 */
 			if (propIsArray) {
-				const outer = childDataArr[Object.keys(childDataArr)[0]];
-				const inner = outer[Object.keys(outer)[0]];
-				return [inner];
+				if (!!childDataArr.length) {
+					const outer = childDataArr[Object.keys(childDataArr)[0]];
+					const inner = outer[Object.keys(outer)[0]];
+					return [inner];
+				}
+				return undefined;
 			}
 
 			/**

@@ -91,6 +91,11 @@ export default class AppRoot extends React.Component {
 			[listId]: fixedOrder
 		};
 
+		// Delete empty arrays
+		if (!(!!fixedOrder.length)) {
+			delete order[listId];
+		}
+
 		// Remove the def if we removed an item
 		const fixedDefsAndOrder = deletedId
 			? 	removeStateOrphans({
