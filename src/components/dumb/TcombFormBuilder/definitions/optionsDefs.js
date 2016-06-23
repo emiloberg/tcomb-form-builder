@@ -121,6 +121,28 @@ const optionsDefs = {
 			}
 		}
 	},
+	array: {
+		schema:  {
+			properties: {
+				type:     { type: 'string' },
+				name:     { type: 'string' },
+				label:    { type: 'string' },
+				help:    { type: 'string' },
+				legend:    { type: 'string' },
+				hide:     { type: 'boolean' },
+				disabled: { type: 'boolean' },
+				disableAdd: { type: 'boolean' },
+				disableRemove: { type: 'boolean' },
+				disableOrder: { type: 'boolean' }
+			},
+			type: 'object'
+		},
+		options: {
+			fields: {
+				type: { disabled: true }
+			}
+		}
+	},
 	crossReference: {
 		disableNullOption: 'disableNullOption',
 		factory: 'options.factory',
@@ -133,7 +155,10 @@ const optionsDefs = {
 		label: 'options.label',
 		disabled: 'options.disabled',
 		defaultValue: 'value',
-		required: 'required'
+		required: 'required',
+		disableAdd: 'options.disableAdd',
+		disableRemove: 'options.disableRemove',
+		disableOrder: 'options.disableOrder'
 	}
 };
 

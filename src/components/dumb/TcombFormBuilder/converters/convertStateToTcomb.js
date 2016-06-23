@@ -1,80 +1,114 @@
-import objectPath from 'object-path';
-
 export default function convertStateToTcomb({ order, defs }) {
-	const out = {};
+	return {
+		schema: {
+			...walk({ walkType: 'schema' })
+		},
+		options: {
+			...walk({ walkType: 'options' })
+		},
+		value: {
+			...walkValue({})
+		}
+	};
 
-	walk();
 
-	return out;
+	function walk({ id = 'root', walkType }) {
+		const out = {
+			...defs[id][walkType]
+		};
 
-	function walk({ path, itemId } = { path: [], itemId: 'root' }) {
+		const propIsArray = defs[id].schema.type === 'array';
+		const childIds = order[id];
+		const delimiter = walkType === 'schema' //eslint-disable-line no-nested-ternary
+			? propIsArray
+				? 'items'
+				: 'properties'
+			: propIsArray
+				? 'item'
+				: 'fields';
+
 		/**
-		 * Options
+		 * Check if it has childs (is an object or an array), or if it's a leaf
+		 * (which actually holds the value)
 		 */
-		const optionsPath = path
-			.map(i => ['fields', i])
-			.reduce((a, b) => a.concat(b), []);
-		const curOptions = { ...defs[itemId].options };
-		objectPath.set(out, ['options', ...optionsPath], curOptions);
+		if (childIds) {
+			/**
+			 * Get the childs
+			 */
+			const childDataArr = childIds.map(curId => {
+				return {
+					...walk({ id: curId, walkType }),
+					xName: defs[curId].name
+				};
+			});
+			const childDataObj = {};
+			childDataArr.forEach(cur => {
+				childDataObj[cur.xName] = { ...cur };
+			});
+			Object.keys(childDataObj).forEach(key => {
+				delete childDataObj[key].xName;
+			});
 
-		/**
-		 * Options depending on childs
-		 */
-		const childIds = order[itemId] || [];
-		const hasChilds = childIds.length > 0;
-		if (hasChilds) {
-			// Set order
-			// Exclude hidden fields from order
-			const curOrder = childIds.map(curItemId => {
-				if (defs[curItemId].show) {
-					return defs[curItemId].name;
-				}
-				return null;
-			})
-			.filter(cur => cur !== null);
-			objectPath.set(out, ['options', ...optionsPath, 'order'], curOrder);
-
-			// Set required
-			const curRequired = childIds.map(curItemId => {
-					return {
-						required: defs[curItemId].required,
-						name: defs[curItemId].name
-					};
-				})
-				.filter(item => item.required)
-				.map(item => item.name);
-			if (curRequired.length > 0) {
-				objectPath.set(out, ['options', ...optionsPath, 'required'], curRequired);
+			if (propIsArray) {
+				/**
+				 * If the child object is a child to an array, then we need to remove the
+				 * field name. As arrays only allow 1 child, then we can easily just grab
+				 * the first property in the object.
+				 */
+				out[delimiter] = childDataObj[Object.keys(childDataObj)[0]];
+			} else {
+				out[delimiter] = childDataObj;
 			}
 		}
+		return out;
+	}
+
+
+	function walkValue({ id = 'root', walkType }) {
+		const propIsArray = defs[id].schema.type === 'array';
+		const childIds = order[id];
 
 		/**
-		 * Schema
+		 * Check if it has childs (is an object or an array), or if it's a leaf
+		 * (which actually holds the value)
 		 */
-		const schemaPath = path
-			.map(i => ['properties', i])
-			.reduce((a, b) => a.concat(b), []);
-		const curSchema = { ...defs[itemId].schema };
-		delete curSchema.required; // Todo, remove when required works.
-		objectPath.set(out, ['schema', ...schemaPath], curSchema);
+		if (childIds) {
+			/**
+			 * Get the childs
+			 */
+			const childDataArr = childIds.map(curId => {
+				return {
+					[defs[curId].name]: walkValue({ id: curId, walkType })
+				};
+			});
 
+			/**
+			 * If it's an array, return the first value (arrays can
+			 * only have 1 value)
+			 */
+			if (propIsArray) {
+				const outer = childDataArr[Object.keys(childDataArr)[0]];
+				const inner = outer[Object.keys(outer)[0]];
+				return [inner];
+			}
 
-		/**
-		 * Value
-		 */
-		const curValue = defs[itemId].value;
-		if (curValue !== undefined) {
-			objectPath.set(out, ['value', ...path], curValue);
+			/**
+			 * If it's not an array (therefor an object) return an
+			 * object with all values.
+			 */
+			const out = {};
+			childDataArr.forEach(child => {
+				Object.keys(child).forEach(key => {
+					out[key] = child[key];
+				});
+			});
+			return out;
 		}
 
 		/**
-		 * Walk
+		 * If it doesn't have child (and is therefor a leaf),
+		 * return the actual default value
 		 */
-		childIds.map(curItemId => {
-			walk({
-				path: [...path, defs[curItemId].name],
-				itemId: curItemId
-			});
-		});
+		return defs[id].value;
 	}
 }
