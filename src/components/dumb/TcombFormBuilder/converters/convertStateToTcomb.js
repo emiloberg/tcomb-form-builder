@@ -28,6 +28,19 @@ export default function convertStateToTcomb({ order, defs }) {
 				: 'fields';
 
 		/**
+		 * Add order array if it's an object.
+		 */
+		if (walkType === 'options' && defs[id].schema.type === 'object') {
+			out.order = order[id].map(curId => {
+				if (!defs[curId].show) {
+					return null;
+				}
+				return defs[curId].name;
+			})
+			.filter(cur => !!cur);
+		}
+
+		/**
 		 * Check if it has childs (is an object or an array), or if it's a leaf
 		 * (which actually holds the value)
 		 */
