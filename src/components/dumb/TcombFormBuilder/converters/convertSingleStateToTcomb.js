@@ -18,6 +18,10 @@ export default function convertSingleStateToTcomb(state) {
 		value: {}
 	};
 
+	if (state.required) {
+		out.schema.required = [state.name];
+	}
+
 	if (state.value) {
 		out.value[state.name] = state.value;
 	}
