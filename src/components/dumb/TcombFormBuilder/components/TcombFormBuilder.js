@@ -209,7 +209,7 @@ export default class AppRoot extends React.Component {
 				</div>
 				<div className={ styles.colEditor }>
 					<div className={ styles.colEditorInner }>
-						<div className={ styles.editorTitleWrapper }>
+						<div className={ styles.editorTitleWrapper } onClick={ this.selectRoot }>
 							<span className={ styles.editorTitle }>{ formName }</span>
 							<button
 								className={
