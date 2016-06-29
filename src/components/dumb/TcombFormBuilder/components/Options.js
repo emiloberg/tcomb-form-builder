@@ -9,9 +9,10 @@ import TCombForm from './TCombForm';
 import objectPath from 'object-path';
 
 function transformStateToOptionsDef({ itemDef, optionsDef }) {
+	const curType = itemDef.name === 'root' ? 'root' : itemDef.schema.type;
 	const out = {
-		options: { ...optionsDef[itemDef.schema.type].options },
-		schema: { ...optionsDef[itemDef.schema.type].schema }
+		options: { ...optionsDef[curType].options },
+		schema: { ...optionsDef[curType].schema }
 	};
 	Object.keys(optionsDef.crossReference).forEach(key => {
 		const val = objectPath.get(itemDef, optionsDef.crossReference[key]);
@@ -20,11 +21,8 @@ function transformStateToOptionsDef({ itemDef, optionsDef }) {
 	out.value.name = itemDef.name;
 	out.value.hide = !itemDef.show;
 
-	// Disable rename of root
-	objectPath.set(out, 'options.fields.name.disabled', (itemDef.name === 'root'));
-
 	// Add options for Enums
-	if (optionsDef[itemDef.schema.type].enableEnum) {
+	if (optionsDef[curType].enableEnum) {
 		out.value.enum = objectPath.get(itemDef.options.options);
 		out.schema.properties.enum = {
 			type:  'array',

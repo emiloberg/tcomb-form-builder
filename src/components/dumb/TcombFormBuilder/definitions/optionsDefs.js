@@ -125,6 +125,42 @@ const optionsDefs = {
 			}
 		}
 	},
+	root: {
+		schema:  {
+			properties: {
+				type:     { type: 'string' },
+				name:     { type: 'string' },
+				label:    { type: 'string' },
+				help:    { type: 'string' },
+				formType: {
+					type: 'string',
+					enum: [
+						'inspections-form'
+					]
+				},
+				disabled: { type: 'boolean' }
+			},
+			type: 'object'
+		},
+		options: {
+			fields: {
+				type: { disabled: true },
+				name: { disabled: true },
+				formType: {
+					nullOption: {
+						value: '',
+						text: 'Normal form'
+					},
+					options: [
+						{
+							text: 'Inspections Form',
+							value: 'inspections-form'
+						}
+					]
+				}
+			}
+		}
+	},
 	array: {
 		schema:  {
 			properties: {
@@ -150,6 +186,7 @@ const optionsDefs = {
 	},
 	crossReference: {
 		disableNullOption: 'disableNullOption',
+		formType: 'options.xFormType',
 		factory: 'options.factory',
 		error: 'options.error',
 		nullOptionValue: 'options.nullOption.value',
