@@ -18,6 +18,15 @@ export default function convertStateToTcomb({ order, defs, forceErrors }) {
 		};
 
 		/**
+		 * Make sure we don't have a empty null options object
+		 */
+		if (out.hasOwnProperty('nullOption')) {
+			if (out.nullOption !== false && !out.nullOption.value && !out.nullOption.text) {
+				delete out.nullOption;
+			}
+		}
+
+		/**
 		 * Force display of errors
 		 */
 		if (forceErrors) {
